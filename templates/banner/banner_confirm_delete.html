@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Banner - CityGate Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Delete Banner</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{% url 'banner:banner_list' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to List
+        </a>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0">
+                    <i class="bi bi-exclamation-triangle"></i> Confirm Deletion
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% if banner.image %}
+                    <div class="col-md-4">
+                        <img src="{{ banner.image.url }}" alt="{{ banner.title }}" class="img-fluid rounded">
+                        {% if banner.mobile_image %}
+                        <div class="mt-2">
+                            <small class="text-muted">Mobile version:</small><br>
+                            <img src="{{ banner.mobile_image.url }}" alt="{{ banner.title }} Mobile" 
+                                 class="img-fluid rounded" style="max-width: 150px;">
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-8">
+                    {% else %}
+                    <div class="col-12">
+                    {% endif %}
+                        <h5>{{ banner.title }}</h5>
+                        <p class="text-muted">{{ banner.description|truncatechars:150 }}</p>
+                        
+                        <div class="mb-3">
+                            <span class="badge bg-info">{{ banner.get_banner_type_display }}</span>
+                            <span class="badge bg-secondary ms-1">{{ banner.get_position_display }}</span>
+                            <span class="badge bg-{% if banner.status == 'active' %}success{% elif banner.status == 'scheduled' %}warning{% else %}secondary{% endif %} ms-1">
+                                {{ banner.get_status_display }}
+                            </span>
+                            {% if banner.is_featured %}
+                                <span class="badge bg-warning ms-1">FEATURED</span>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <p><strong>Start Date:</strong><br>
+                                   <small>{{ banner.start_date|date:"F d, Y H:i" }}</small></p>
+                            </div>
+                            {% if banner.end_date %}
+                            <div class="col-sm-6">
+                                <p><strong>End Date:</strong><br>
+                                   <small>{{ banner.end_date|date:"F d, Y H:i" }}</small></p>
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        {% if banner.link_url %}
+                        <p><strong>Link:</strong><br>
+                           <small><a href="{{ banner.link_url }}" target="_blank">{{ banner.link_url|truncatechars:50 }}</a></small></p>
+                        {% endif %}
+                        
+                        <p><strong>Created by:</strong> {{ banner.created_by.get_full_name }}</p>
+                        <p><strong>Created:</strong> {{ banner.created_at|date:"F d, Y" }}</p>
+                    </div>
+                </div>
+                
+                <div class="alert alert-danger mt-3">
+                    <strong>Warning:</strong> This action cannot be undone. The banner and all associated files will be permanently deleted.
+                </div>
+                
+                <form method="post" class="mt-4">
+                    {% csrf_token %}
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <a href="{% url 'banner:banner_list' %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-lg"></i> Cancel
+                            </a>
+                        </div>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash"></i> Yes, Delete Banner
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

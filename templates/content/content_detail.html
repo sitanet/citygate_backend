@@ -1,0 +1,208 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ content.title }} - CityGate Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">{{ content.title }}</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <a href="{% url 'content:content_update' content.pk %}" class="btn btn-primary">
+                <i class="bi bi-pencil"></i> Edit
+            </a>
+            <a href="{% url 'content:content_delete' content.pk %}" class="btn btn-outline-danger delete-confirm">
+                <i class="bi bi-trash"></i> Delete
+            </a>
+        </div>
+        <a href="{% url 'content:content_list' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to List
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <!-- Main Content -->
+        <div class="card mb-4">
+            <div class="card-body">
+                {% if content.thumbnail %}
+                <div class="mb-3">
+                    <img src="{{ content.thumbnail.url }}" alt="{{ content.title }}" 
+                         class="img-fluid rounded" style="max-height: 300px;">
+                </div>
+                {% endif %}
+                
+                <div class="mb-3">
+                    <span class="badge bg-info">{{ content.get_content_type_display }}</span>
+                    {% if content.category %}
+                        <span class="badge ms-1" style="background-color: {{ content.category.color }}">
+                            {{ content.category.display_name }}
+                        </span>
+                    {% endif %}
+                    <span class="badge bg-{% if content.status == 'published' %}success{% elif content.status == 'draft' %}warning{% else %}secondary{% endif %} ms-1">
+                        {{ content.get_status_display }}
+                    </span>
+                    {% if content.is_live %}
+                        <span class="badge badge-live ms-1">LIVE</span>
+                    {% endif %}
+                </div>
+                
+                <h5>Description</h5>
+                <p class="lead">{{ content.description }}</p>
+                
+                {% if content.pastor %}
+                <div class="mb-3">
+                    <h6>Pastor</h6>
+                    <p>{{ content.pastor }}</p>
+                </div>
+                {% endif %}
+                
+                {% if content.scripture %}
+                <div class="mb-3">
+                    <h6>Scripture</h6>
+                    <p class="font-italic">{{ content.scripture }}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Media Section -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Media Files</h5>
+            </div>
+            <div class="card-body">
+                {% if content.video_file or content.video_url %}
+                <div class="mb-3">
+                    <h6>Video</h6>
+                    {% if content.video_file %}
+                        <video controls class="w-100" style="max-height: 400px;">
+                            <source src="{{ content.video_file.url }}" type="video/mp4">
+                        </video>
+                    {% elif content.video_url %}
+                        <p><a href="{{ content.video_url }}" target="_blank" class="btn btn-outline-primary">
+                            <i class="bi bi-play-circle"></i> Watch Video
+                        </a></p>
+                    {% endif %}
+                </div>
+                {% endif %}
+                
+                {% if content.audio_file or content.audio_url %}
+                <div class="mb-3">
+                    <h6>Audio</h6>
+                    {% if content.audio_file %}
+                        <audio controls class="w-100">
+                            <source src="{{ content.audio_file.url }}" type="audio/mpeg">
+                        </audio>
+                    {% elif content.audio_url %}
+                        <p><a href="{{ content.audio_url }}" target="_blank" class="btn btn-outline-primary">
+                            <i class="bi bi-music-note"></i> Listen Audio
+                        </a></p>
+                    {% endif %}
+                </div>
+                {% endif %}
+                
+                {% if content.live_stream_url and content.content_type == 'live' %}
+                <div class="mb-3">
+                    <h6>Live Stream</h6>
+                    <a href="{{ content.live_stream_url }}" target="_blank" class="btn btn-outline-danger">
+                        <i class="bi bi-broadcast"></i> Watch Live Stream
+                    </a>
+                </div>
+                {% endif %}
+                
+                {% if not content.video_file and not content.video_url and not content.audio_file and not content.audio_url and not content.live_stream_url %}
+                <p class="text-muted">No media files attached to this content.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <!-- Metadata -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Details</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-2">
+                    <strong>Status:</strong>
+                    <span class="badge bg-{% if content.status == 'published' %}success{% elif content.status == 'draft' %}warning{% else %}secondary{% endif %}">
+                        {{ content.get_status_display }}
+                    </span>
+                </div>
+                
+                {% if content.duration %}
+                <div class="mb-2">
+                    <strong>Duration:</strong> {{ content.duration }}
+                </div>
+                {% endif %}
+                
+                <div class="mb-2">
+                    <strong>Created:</strong> {{ content.created_at|date:"M d, Y H:i" }}
+                </div>
+                
+                <div class="mb-2">
+                    <strong>Updated:</strong> {{ content.updated_at|date:"M d, Y H:i" }}
+                </div>
+                
+                <div class="mb-2">
+                    <strong>Created by:</strong> {{ content.created_by.get_full_name }}
+                </div>
+                
+                <div class="mb-2">
+                    <strong>Updated by:</strong> {{ content.updated_by.get_full_name }}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Actions -->
+        {% if content.content_type == 'live' %}
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Live Controls</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid">
+                    <button type="button" class="btn btn-{% if content.is_live %}danger{% else %}success{% endif %}" 
+                            onclick="toggleLive({{ content.pk }})">
+                        <i class="bi bi-{% if content.is_live %}stop-circle{% else %}play-circle{% endif %}"></i>
+                        {% if content.is_live %}Stop Live{% else %}Start Live{% endif %}
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function toggleLive(contentId) {
+    if (!confirm('Are you sure you want to toggle the live status?')) {
+        return;
+    }
+    
+    fetch(`/content/content/${contentId}/toggle-live/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred');
+    });
+}
+</script>
+{% endblock %}

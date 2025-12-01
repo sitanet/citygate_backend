@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Events List - CityGate Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Event Management</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <a href="{% url 'content:event_create' %}" class="btn btn-primary">
+                <i class="bi bi-plus-lg"></i> Add Event
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Filters -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-4">
+                <input type="text" class="form-control" name="search" placeholder="Search events..." 
+                       value="{{ search_query }}">
+            </div>
+            <div class="col-md-3">
+                <select name="category" class="form-select">
+                    <option value="">All Categories</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}" {% if category_filter == category.id|stringformat:"s" %}selected{% endif %}>
+                            {{ category.display_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="status" class="form-select">
+                    {% for status in status_options %}
+                        <option value="{{ status.0 }}" {% if status_filter == status.0 %}selected{% endif %}>
+                            {{ status.1 }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <div class="d-grid gap-2 d-md-flex">
+                    <button type="submit" class="btn btn-outline-primary">
+                        <i class="bi bi-search"></i> Search
+                    </button>
+                    <a href="{% url 'content:event_list' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-clockwise"></i>
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Events List -->
+<div class="card">
+    <div class="card-body">
+        {% if page_obj.object_list %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Event</th>
+                            <th>Date & Time</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                            <th>Created By</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for event in page_obj %}
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    {% if event.thumbnail %}
+                                        <img src="{{ event.thumbnail.url }}" alt="{{ event.title }}" 
+                                             class="rounded me-2" style="width: 40px; height: 40px; object-fit: cover;">
+                                    {% endif %}
+                                    <div>
+                                        <strong>{{ event.title }}</strong>
+                                        {% if event.is_live %}
+                                            <span class="badge badge-live ms-2">LIVE</span>
+                                        {% endif %}
+                                        <br>
+                                        <small class="text-muted">{{ event.description|truncatechars:50 }}</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <strong>{{ event.start_datetime|date:"M d, Y" }}</strong><br>
+                                    <small class="text-muted">{{ event.start_datetime|time:"H:i" }}</small>
+                                    {% if event.end_datetime %}
+                                        - <small class="text-muted">{{ event.end_datetime|time:"H:i" }}</small>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td>
+                                {% if event.category %}
+                                    <span class="badge" style="background-color: {{ event.category.color }}">
+                                        {{ event.category.display_name }}
+                                    </span>
+                                {% else %}
+                                    <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if event.is_live %}
+                                    <span class="badge badge-live">LIVE NOW</span>
+                                {% elif event.start_datetime > now %}
+                                    <span class="badge bg-info">UPCOMING</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">PAST</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <small>{{ event.created_by.get_full_name }}</small><br>
+                                <small class="text-muted">{{ event.created_at|date:"M d, Y" }}</small>
+                            </td>
+                            <td>
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <a href="{% url 'content:event_detail' event.pk %}" 
+                                       class="btn btn-outline-info" title="View">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="{% url 'content:event_update' event.pk %}" 
+                                       class="btn btn-outline-primary" title="Edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <button type="button" class="btn btn-outline-{% if event.is_live %}danger{% else %}success{% endif %}" 
+                                            onclick="toggleEventLive({{ event.pk }})" title="Toggle Live">
+                                        <i class="bi bi-{% if event.is_live %}stop-circle{% else %}play-circle{% endif %}"></i>
+                                    </button>
+                                    <a href="{% url 'content:event_delete' event.pk %}" 
+                                       class="btn btn-outline-danger delete-confirm" title="Delete">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            {% include 'includes/pagination.html' %}
+        {% else %}
+            <div class="text-center py-5">
+                <i class="bi bi-calendar-x display-1 text-muted"></i>
+                <h5 class="mt-3">No events found</h5>
+                <p class="text-muted">Create your first event to get started.</p>
+                <a href="{% url 'content:event_create' %}" class="btn btn-primary">
+                    <i class="bi bi-plus-lg"></i> Add Event
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function toggleEventLive(eventId) {
+    if (!confirm('Are you sure you want to toggle the live status?')) {
+        return;
+    }
+    
+    fetch(`/content/events/${eventId}/toggle-live/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred');
+    });
+}
+</script>
+{% endblock %}

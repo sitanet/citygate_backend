@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ title }} - CityGate Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">{{ title }}</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{% url 'content:content_list' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to List
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-lg"></i> {{ action }} Content
+                            </button>
+                            <a href="{% url 'content:content_list' %}" class="btn btn-outline-secondary ms-2">
+                                Cancel
+                            </a>
+                        </div>
+                        {% if content %}
+                        <a href="{% url 'content:content_detail' content.pk %}" class="btn btn-outline-info">
+                            <i class="bi bi-eye"></i> View Content
+                        </a>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Guidelines</h5>
+            </div>
+            <div class="card-body">
+                <h6>Content Types:</h6>
+                <ul class="small">
+                    <li><strong>Video:</strong> Upload video files or provide video URLs</li>
+                    <li><strong>Audio:</strong> Upload audio files or provide audio URLs</li>
+                    <li><strong>Live:</strong> For live streaming content</li>
+                </ul>
+                
+                <h6 class="mt-3">Status:</h6>
+                <ul class="small">
+                    <li><strong>Draft:</strong> Not visible to public</li>
+                    <li><strong>Published:</strong> Visible to public</li>
+                    <li><strong>Archived:</strong> Archived content</li>
+                </ul>
+                
+                <h6 class="mt-3">File Limits:</h6>
+                <ul class="small">
+                    <li>Video files: Max 500MB</li>
+                    <li>Audio files: Max 50MB</li>
+                    <li>Images: Max 10MB</li>
+                </ul>
+            </div>
+        </div>
+        
+        {% if content %}
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="mb-0">Current Files</h5>
+            </div>
+            <div class="card-body">
+                {% if content.thumbnail %}
+                <div class="mb-2">
+                    <strong>Thumbnail:</strong><br>
+                    <img src="{{ content.thumbnail.url }}" alt="Thumbnail" class="img-thumbnail" style="max-width: 100px;">
+                </div>
+                {% endif %}
+                
+                {% if content.video_file %}
+                <div class="mb-2">
+                    <strong>Video File:</strong><br>
+                    <a href="{{ content.video_file.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-play-circle"></i> View
+                    </a>
+                </div>
+                {% endif %}
+                
+                {% if content.audio_file %}
+                <div class="mb-2">
+                    <strong>Audio File:</strong><br>
+                    <a href="{{ content.audio_file.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-music-note"></i> Listen
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Show/hide relevant fields based on content type
+document.getElementById('id_content_type').addEventListener('change', function() {
+    const contentType = this.value;
+    const videoFields = document.querySelectorAll('[id*="video"]');
+    const audioFields = document.querySelectorAll('[id*="audio"]');
+    const liveFields = document.querySelectorAll('[id*="live"]');
+    
+    // Reset all fields visibility
+    videoFields.forEach(field => field.closest('.form-group').style.display = 'block');
+    audioFields.forEach(field => field.closest('.form-group').style.display = 'block');
+    liveFields.forEach(field => field.closest('.form-group').style.display = 'block');
+    
+    // Hide irrelevant fields based on content type
+    if (contentType === 'audio') {
+        videoFields.forEach(field => {
+            if (field.id.includes('video')) {
+                field.closest('.form-group').style.display = 'none';
+            }
+        });
+        liveFields.forEach(field => {
+            if (field.id.includes('live')) {
+                field.closest('.form-group').style.display = 'none';
+            }
+        });
+    } else if (contentType === 'video') {
+        audioFields.forEach(field => {
+            if (field.id.includes('audio')) {
+                field.closest('.form-group').style.display = 'none';
+            }
+        });
+        liveFields.forEach(field => {
+            if (field.id.includes('live')) {
+                field.closest('.form-group').style.display = 'none';
+            }
+        });
+    } else if (contentType === 'live') {
+        videoFields.forEach(field => {
+            if (field.id.includes('video_file')) {
+                field.closest('.form-group').style.display = 'none';
+            }
+        });
+        audioFields.forEach(field => {
+            if (field.id.includes('audio')) {
+                field.closest('.form-group').style.display = 'none';
+            }
+        });
+    }
+});
+
+// Trigger the change event on page load
+document.getElementById('id_content_type').dispatchEvent(new Event('change'));
+</script>
+{% endblock %}

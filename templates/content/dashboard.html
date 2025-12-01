@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - CityGate Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Dashboard</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="location.reload()">
+                <i class="bi bi-arrow-clockwise"></i> Refresh
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row mb-4">
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stats-card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Content</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ stats.total_content }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="bi bi-play-circle fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stats-card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Live Content</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ live_content|length }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="bi bi-broadcast fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stats-card border-left-info shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Upcoming Events</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ upcoming_events|length }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="bi bi-calendar-event fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stats-card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Categories</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ stats.total_categories }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="bi bi-tags fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Recent Content -->
+    <div class="col-lg-8 mb-4">
+        <div class="card shadow">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Recent Content</h6>
+                <a href="{% url 'content:content_list' %}" class="btn btn-sm btn-primary">View All</a>
+            </div>
+            <div class="card-body">
+                {% if recent_content %}
+                    {% for content in recent_content %}
+                    <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
+                        {% if content.thumbnail %}
+                            <img src="{{ content.thumbnail.url }}" alt="{{ content.title }}" class="rounded me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                        {% else %}
+                            <div class="bg-secondary rounded me-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                <i class="bi bi-play-circle text-white"></i>
+                            </div>
+                        {% endif %}
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1">{{ content.title }}</h6>
+                            <p class="text-muted small mb-1">{{ content.description|truncatechars:80 }}</p>
+                            <div class="d-flex align-items-center">
+                                <span class="badge bg-{{ content.status }}">{{ content.get_status_display }}</span>
+                                {% if content.is_live %}
+                                    <span class="badge badge-live ms-2">LIVE</span>
+                                {% endif %}
+                                <small class="text-muted ms-2">{{ content.created_at|timesince }} ago</small>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted text-center">No content available</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Upcoming Events -->
+    <div class="col-lg-4 mb-4">
+        <div class="card shadow">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Upcoming Events</h6>
+                <a href="{% url 'content:event_list' %}" class="btn btn-sm btn-primary">View All</a>
+            </div>
+            <div class="card-body">
+                {% if upcoming_events %}
+                    {% for event in upcoming_events %}
+                    <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1">{{ event.title }}</h6>
+                            <p class="text-muted small mb-1">{{ event.description|truncatechars:50 }}</p>
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-calendar text-primary me-1"></i>
+                                <small class="text-muted">{{ event.start_datetime|date:"M d, Y H:i" }}</small>
+                                {% if event.is_live %}
+                                    <span class="badge badge-live ms-2">LIVE</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted text-center">No upcoming events</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Live Content -->
+{% if live_content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-danger">
+                    <i class="bi bi-broadcast"></i> Currently Live
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for content in live_content %}
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="card border-danger">
+                            <div class="card-body">
+                                <h6 class="card-title">{{ content.title }}</h6>
+                                <p class="card-text text-muted small">{{ content.description|truncatechars:60 }}</p>
+                                <div class="d-flex align-items-center">
+                                    <span class="badge badge-live">LIVE</span>
+                                    <small class="text-muted ms-2">{{ content.get_content_type_display }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ event.title }} - CityGate Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">{{ event.title }}</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <a href="{% url 'content:event_update' event.pk %}" class="btn btn-primary">
+                <i class="bi bi-pencil"></i> Edit
+            </a>
+            <a href="{% url 'content:event_delete' event.pk %}" class="btn btn-outline-danger delete-confirm">
+                <i class="bi bi-trash"></i> Delete
+            </a>
+        </div>
+        <a href="{% url 'content:event_list' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to List
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <!-- Main Event Info -->
+        <div class="card mb-4">
+            <div class="card-body">
+                {% if event.thumbnail %}
+                <div class="mb-3">
+                    <img src="{{ event.thumbnail.url }}" alt="{{ event.title }}" 
+                         class="img-fluid rounded" style="max-height: 300px;">
+                </div>
+                {% endif %}
+                
+                <div class="mb-3">
+                    {% if event.category %}
+                        <span class="badge" style="background-color: {{ event.category.color }}">
+                            {{ event.category.display_name }}
+                        </span>
+                    {% endif %}
+                    {% if event.is_live %}
+                        <span class="badge badge-live ms-1">LIVE NOW</span>
+                    {% elif event.start_datetime > now %}
+                        <span class="badge bg-info ms-1">UPCOMING</span>
+                    {% else %}
+                        <span class="badge bg-secondary ms-1">PAST EVENT</span>
+                    {% endif %}
+                </div>
+                
+                <h5>Description</h5>
+                <p class="lead">{{ event.description }}</p>
+                
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <h6><i class="bi bi-calendar"></i> Start Date & Time</h6>
+                        <p>{{ event.start_datetime|date:"F d, Y" }} at {{ event.start_datetime|time:"H:i" }}</p>
+                    </div>
+                    {% if event.end_datetime %}
+                    <div class="col-md-6">
+                        <h6><i class="bi bi-calendar-check"></i> End Date & Time</h6>
+                        <p>{{ event.end_datetime|date:"F d, Y" }} at {{ event.end_datetime|time:"H:i" }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                {% if event.content %}
+                <div class="mt-4">
+                    <h6>Related Content</h6>
+                    <div class="card border-primary">
+                        <div class="card-body">
+                            <h6 class="card-title">{{ event.content.title }}</h6>
+                            <p class="card-text">{{ event.content.description|truncatechars:100 }}</p>
+                            <a href="{% url 'content:content_detail' event.content.pk %}" class="btn btn-sm btn-primary">
+                                <i class="bi bi-eye"></i> View Content
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <!-- Event Details -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Event Details</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-2">
+                    <strong>Status:</strong>
+                    {% if event.is_live %}
+                        <span class="badge badge-live">LIVE NOW</span>
+                    {% elif event.start_datetime > now %}
+                        <span class="badge bg-info">UPCOMING</span>
+                    {% else %}
+                        <span class="badge bg-secondary">PAST EVENT</span>
+                    {% endif %}
+                </div>
+                
+                <div class="mb-2">
+                    <strong>Created:</strong> {{ event.created_at|date:"M d, Y H:i" }}
+                </div>
+                
+                <div class="mb-2">
+                    <strong>Updated:</strong> {{ event.updated_at|date:"M d, Y H:i" }}
+                </div>
+                
+                <div class="mb-2">
+                    <strong>Created by:</strong> {{ event.created_by.get_full_name }}
+                </div>
+                
+                {% if event.start_datetime > now %}
+                <div class="mt-3">
+                    <small class="text-muted">
+                        <i class="bi bi-clock"></i> 
+                        Event starts {{ event.start_datetime|timeuntil }}
+                    </small>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Live Controls -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Event Controls</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid">
+                    <button type="button" class="btn btn-{% if event.is_live %}danger{% else %}success{% endif %}" 
+                            onclick="toggleEventLive({{ event.pk }})">
+                        <i class="bi bi-{% if event.is_live %}stop-circle{% else %}play-circle{% endif %}"></i>
+                        {% if event.is_live %}Stop Event{% else %}Start Event{% endif %}
+                    </button>
+                </div>
+                
+                {% if event.content %}
+                <hr>
+                <div class="d-grid">
+                    <a href="{% url 'content:content_detail' event.content.pk %}" class="btn btn-outline-primary">
+                        <i class="bi bi-play-circle"></i> Manage Content
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function toggleEventLive(eventId) {
+    if (!confirm('Are you sure you want to toggle the live status?')) {
+        return;
+    }
+    
+    fetch(`/content/events/${eventId}/toggle-live/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred');
+    });
+}
+</script>
+{% endblock %}

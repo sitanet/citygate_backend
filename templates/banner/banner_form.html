@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ title }} - CityGate Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">{{ title }}</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{% url 'banner:banner_list' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to List
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-lg"></i> {{ action }} Banner
+                            </button>
+                            <a href="{% url 'banner:banner_list' %}" class="btn btn-outline-secondary ms-2">
+                                Cancel
+                            </a>
+                        </div>
+                        {% if banner %}
+                        <div>
+                            {% if banner.link_url %}
+                            <a href="{{ banner.link_url }}" target="_blank" class="btn btn-outline-info">
+                                <i class="bi bi-link-45deg"></i> Preview Link
+                            </a>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Guidelines</h5>
+            </div>
+            <div class="card-body">
+                <h6>Banner Types:</h6>
+                <ul class="small">
+                    <li><strong>Main Banner:</strong> Primary promotional banners</li>
+                    <li><strong>Event Banner:</strong> Event-specific promotions</li>
+                    <li><strong>Announcement:</strong> Important church announcements</li>
+                    <li><strong>Promotion:</strong> General promotional content</li>
+                </ul>
+                
+                <h6 class="mt-3">Positions:</h6>
+                <ul class="small">
+                    <li><strong>Top:</strong> Header area banners</li>
+                    <li><strong>Middle:</strong> Content area banners</li>
+                    <li><strong>Bottom:</strong> Footer area banners</li>
+                    <li><strong>Sidebar:</strong> Side navigation banners</li>
+                </ul>
+                
+                <h6 class="mt-3">Image Recommendations:</h6>
+                <ul class="small">
+                    <li>Use high-quality images (min 1200x400px)</li>
+                    <li>Keep text overlay minimal</li>
+                    <li>Ensure mobile-friendly design</li>
+                    <li>Use church brand colors</li>
+                </ul>
+                
+                <h6 class="mt-3">Scheduling:</h6>
+                <ul class="small">
+                    <li>Set appropriate start/end dates</li>
+                    <li>Use "Featured" for priority display</li>
+                    <li>Order determines display sequence</li>
+                </ul>
+            </div>
+        </div>
+        
+        {% if banner %}
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="mb-0">Current Images</h5>
+            </div>
+            <div class="card-body">
+                {% if banner.image %}
+                <div class="mb-3">
+                    <strong>Desktop Image:</strong><br>
+                    <img src="{{ banner.image.url }}" alt="Desktop Banner" class="img-fluid rounded">
+                </div>
+                {% endif %}
+                
+                {% if banner.mobile_image %}
+                <div class="mb-3">
+                    <strong>Mobile Image:</strong><br>
+                    <img src="{{ banner.mobile_image.url }}" alt="Mobile Banner" class="img-fluid rounded" style="max-width: 200px;">
+                </div>
+                {% endif %}
+                
+                {% if not banner.image and not banner.mobile_image %}
+                <p class="text-muted">No images uploaded yet.</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="mb-0">Banner Details</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-2">
+                    <strong>Type:</strong>
+                    <span class="badge bg-info">{{ banner.get_banner_type_display }}</span>
+                </div>
+                
+                <div class="mb-2">
+                    <strong>Position:</strong>
+                    <span class="badge bg-secondary">{{ banner.get_position_display }}</span>
+                </div>
+                
+                <div class="mb-2">
+                    <strong>Status:</strong>
+                    <span class="badge bg-{% if banner.status == 'active' %}success{% elif banner.status == 'scheduled' %}warning{% else %}secondary{% endif %}">
+                        {{ banner.get_status_display }}
+                    </span>
+                </div>
+                
+                <div class="mb-2">
+                    <strong>Order:</strong> {{ banner.order }}
+                </div>
+                
+                {% if banner.is_featured %}
+                <div class="mb-2">
+                    <span class="badge bg-warning">FEATURED</span>
+                </div>
+                {% endif %}
+                
+                <div class="mb-2">
+                    <strong>Created:</strong> {{ banner.created_at|date:"M d, Y H:i" }}
+                </div>
+                
+                <div class="mb-2">
+                    <strong>By:</strong> {{ banner.created_by.get_full_name }}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Preview image functionality
+function previewImage(input, previewId) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById(previewId).src = e.target.result;
+            document.getElementById(previewId).style.display = 'block';
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+// Add image preview functionality
+document.getElementById('id_image')?.addEventListener('change', function() {
+    previewImage(this, 'image-preview');
+});
+
+document.getElementById('id_mobile_image')?.addEventListener('change', function() {
+    previewImage(this, 'mobile-image-preview');
+});
+
+// Show/hide link fields based on banner type
+document.getElementById('id_banner_type')?.addEventListener('change', function() {
+    const linkFields = document.querySelectorAll('[id*="link"]');
+    const showLinks = ['event', 'promotion'].includes(this.value);
+    
+    linkFields.forEach(field => {
+        const formGroup = field.closest('.form-group') || field.closest('.mb-3');
+        if (formGroup) {
+            formGroup.style.display = showLinks ? 'block' : 'none';
+        }
+    });
+});
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('id_banner_type')?.dispatchEvent(new Event('change'));
+});
+</script>
+{% endblock %}

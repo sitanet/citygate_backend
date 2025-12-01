@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ title }} - CityGate Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">{{ title }}</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{% url 'content:category_list' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to List
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-lg"></i> {{ action }} Category
+                            </button>
+                            <a href="{% url 'content:category_list' %}" class="btn btn-outline-secondary ms-2">
+                                Cancel
+                            </a>
+                        </div>
+                        {% if category %}
+                        <a href="{% url 'content:category_detail' category.pk %}" class="btn btn-outline-info">
+                            <i class="bi bi-eye"></i> View Category
+                        </a>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Guidelines</h5>
+            </div>
+            <div class="card-body">
+                <h6>Category Name:</h6>
+                <ul class="small">
+                    <li>Use lowercase with underscores (e.g., sunday_service)</li>
+                    <li>Keep it unique and descriptive</li>
+                    <li>Cannot be changed after creation</li>
+                </ul>
+                
+                <h6 class="mt-3">Display Name:</h6>
+                <ul class="small">
+                    <li>User-friendly version of the name</li>
+                    <li>Can contain spaces and capitalization</li>
+                    <li>Shown to users in the app</li>
+                </ul>
+                
+                <h6 class="mt-3">Color:</h6>
+                <ul class="small">
+                    <li>Used for category badges and themes</li>
+                    <li>Choose colors that represent the service</li>
+                    <li>Ensure good contrast for readability</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="mb-0">Color Preview</h5>
+            </div>
+            <div class="card-body">
+                <div id="color-preview" class="p-3 rounded text-white text-center">
+                    <strong>Sample Badge</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Color preview functionality
+document.getElementById('id_color').addEventListener('input', function() {
+    const color = this.value;
+    const preview = document.getElementById('color-preview');
+    preview.style.backgroundColor = color;
+    
+    // Calculate text color for contrast
+    const rgb = parseInt(color.slice(1), 16);
+    const r = (rgb >> 16) & 0xff;
+    const g = (rgb >> 8) & 0xff;
+    const b = (rgb >> 0) & 0xff;
+    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+    
+    preview.style.color = brightness > 125 ? '#000000' : '#ffffff';
+});
+
+// Initialize color preview
+document.getElementById('id_color').dispatchEvent(new Event('input'));
+</script>
+{% endblock %}

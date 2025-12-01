@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Content - CityGate Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Delete Content</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{% url 'content:content_detail' content.pk %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Content
+        </a>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0">
+                    <i class="bi bi-exclamation-triangle"></i> Confirm Deletion
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% if content.thumbnail %}
+                    <div class="col-md-3">
+                        <img src="{{ content.thumbnail.url }}" alt="{{ content.title }}" class="img-fluid rounded">
+                    </div>
+                    <div class="col-md-9">
+                    {% else %}
+                    <div class="col-12">
+                    {% endif %}
+                        <h5>{{ content.title }}</h5>
+                        <p class="text-muted">{{ content.description|truncatechars:150 }}</p>
+                        
+                        <div class="mb-3">
+                            <span class="badge bg-info">{{ content.get_content_type_display }}</span>
+                            {% if content.category %}
+                                <span class="badge ms-1" style="background-color: {{ content.category.color }}">
+                                    {{ content.category.display_name }}
+                                </span>
+                            {% endif %}
+                            <span class="badge bg-{% if content.status == 'published' %}success{% elif content.status == 'draft' %}warning{% else %}secondary{% endif %} ms-1">
+                                {{ content.get_status_display }}
+                            </span>
+                        </div>
+                        
+                        <p><strong>Created:</strong> {{ content.created_at|date:"F d, Y" }}</p>
+                        <p><strong>By:</strong> {{ content.created_by.get_full_name }}</p>
+                    </div>
+                </div>
+                
+                <div class="alert alert-danger mt-3">
+                    <strong>Warning:</strong> This action cannot be undone. All associated media files and data will be permanently deleted.
+                </div>
+                
+                <form method="post" class="mt-4">
+                    {% csrf_token %}
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <a href="{% url 'content:content_detail' content.pk %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-lg"></i> Cancel
+                            </a>
+                        </div>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash"></i> Yes, Delete Content
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

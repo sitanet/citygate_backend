@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}Categories - CityGate Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Service Categories</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <a href="{% url 'content:category_create' %}" class="btn btn-primary">
+                <i class="bi bi-plus-lg"></i> Add Category
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Search -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-6">
+                <input type="text" class="form-control" name="search" placeholder="Search categories..." 
+                       value="{{ search_query }}">
+            </div>
+            <div class="col-md-6">
+                <div class="d-grid gap-2 d-md-flex">
+                    <button type="submit" class="btn btn-outline-primary">
+                        <i class="bi bi-search"></i> Search
+                    </button>
+                    <a href="{% url 'content:category_list' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-clockwise"></i> Reset
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Categories Grid -->
+<div class="row">
+    {% for category in categories %}
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-100 border-start" style="border-left-color: {{ category.color }} !important; border-left-width: 4px !important;">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <h5 class="card-title mb-0">{{ category.display_name }}</h5>
+                    <span class="badge rounded-pill" style="background-color: {{ category.color }};">
+                        {{ category.name }}
+                    </span>
+                </div>
+                
+                <p class="card-text text-muted">{{ category.description|truncatechars:100 }}</p>
+                
+                <div class="row text-center mt-3">
+                    <div class="col-6">
+                        <div class="border-end">
+                            <h6 class="mb-0">{{ category.content_count }}</h6>
+                            <small class="text-muted">Content</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <h6 class="mb-0">{{ category.event_count }}</h6>
+                        <small class="text-muted">Events</small>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-transparent">
+                <div class="btn-group w-100" role="group">
+                    <a href="{% url 'content:category_detail' category.pk %}" 
+                       class="btn btn-outline-info btn-sm">
+                        <i class="bi bi-eye"></i> View
+                    </a>
+                    <a href="{% url 'content:category_update' category.pk %}" 
+                       class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-pencil"></i> Edit
+                    </a>
+                    <a href="{% url 'content:category_delete' category.pk %}" 
+                       class="btn btn-outline-danger btn-sm delete-confirm">
+                        <i class="bi bi-trash"></i> Delete
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="text-center py-5">
+            <i class="bi bi-tags display-1 text-muted"></i>
+            <h5 class="mt-3">No categories found</h5>
+            <p class="text-muted">Create your first service category to organize content and events.</p>
+            <a href="{% url 'content:category_create' %}" class="btn btn-primary">
+                <i class="bi bi-plus-lg"></i> Add Category
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

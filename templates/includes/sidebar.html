@@ -1,0 +1,64 @@
+<div class="position-sticky pt-3">
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" 
+               href="{% url 'content:dashboard' %}">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+        </li>
+        
+        {% if user.role in 'admin,content' or user.is_superuser %}
+        <li class="nav-item">
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-white">
+                <span>Content Management</span>
+            </h6>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% if 'content' in request.path and 'content/' in request.path %}active{% endif %}" 
+               href="{% url 'content:content_list' %}">
+                <i class="bi bi-play-circle"></i> Content
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% if 'events' in request.path %}active{% endif %}" 
+               href="{% url 'content:event_list' %}">
+                <i class="bi bi-calendar-event"></i> Events
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% if 'categories' in request.path %}active{% endif %}" 
+               href="{% url 'content:category_list' %}">
+                <i class="bi bi-tags"></i> Categories
+            </a>
+        </li>
+        {% endif %}
+        
+        {% if user.role in 'admin,banner' or user.is_superuser %}
+        <li class="nav-item">
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-white">
+                <span>Banner Management</span>
+            </h6>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% if 'banner' in request.path %}active{% endif %}" 
+               href="{% url 'banner:banner_list' %}">
+                <i class="bi bi-image"></i> Banners
+            </a>
+        </li>
+        {% endif %}
+        
+        {% if user.role in 'admin,finance' or user.is_superuser %}
+        <li class="nav-item">
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-white">
+                <span>User Management</span>
+            </h6>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% if 'accounts/users' in request.path %}active{% endif %}" 
+               href="{% url 'accounts:user_list' %}">
+                <i class="bi bi-people"></i> Users
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</div>

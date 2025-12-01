@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ category.display_name }} - CityGate Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">
+        <span class="badge me-3" style="background-color: {{ category.color }};">{{ category.name }}</span>
+        {{ category.display_name }}
+    </h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <a href="{% url 'content:category_update' category.pk %}" class="btn btn-primary">
+                <i class="bi bi-pencil"></i> Edit
+            </a>
+            <a href="{% url 'content:category_delete' category.pk %}" class="btn btn-outline-danger delete-confirm">
+                <i class="bi bi-trash"></i> Delete
+            </a>
+        </div>
+        <a href="{% url 'content:category_list' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to List
+        </a>
+    </div>
+</div>
+
+<!-- Category Info -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card border-start" style="border-left-color: {{ category.color }} !important; border-left-width: 4px !important;">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h5>Description</h5>
+                        <p class="lead">{{ category.description|default:"No description provided." }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row text-center">
+                            <div class="col-6">
+                                <div class="border-end">
+                                    <h4 class="mb-0 text-primary">{{ content_count }}</h4>
+                                    <small class="text-muted">Content Items</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <h4 class="mb-0 text-info">{{ event_count }}</h4>
+                                <small class="text-muted">Events</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Recent Content -->
+    <div class="col-lg-6 mb-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Recent Content</h5>
+                <a href="{% url 'content:content_list' %}?category={{ category.id }}" class="btn btn-sm btn-outline-primary">
+                    View All
+                </a>
+            </div>
+            <div class="card-body">
+                {% if content_list %}
+                    {% for content in content_list %}
+                    <div class="d-flex align-items-center mb-3 pb-3 {% if not forloop.last %}border-bottom{% endif %}">
+                        {% if content.thumbnail %}
+                            <img src="{{ content.thumbnail.url }}" alt="{{ content.title }}" 
+                                 class="rounded me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                        {% else %}
+                            <div class="bg-secondary rounded me-3 d-flex align-items-center justify-content-center" 
+                                 style="width: 50px; height: 50px;">
+                                <i class="bi bi-play-circle text-white"></i>
+                            </div>
+                        {% endif %}
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1">
+                                <a href="{% url 'content:content_detail' content.pk %}" class="text-decoration-none">
+                                    {{ content.title|truncatechars:40 }}
+                                </a>
+                            </h6>
+                            <div class="d-flex align-items-center">
+                                <span class="badge bg-info">{{ content.get_content_type_display }}</span>
+                                {% if content.is_live %}
+                                    <span class="badge badge-live ms-2">LIVE</span>
+                                {% endif %}
+                                <small class="text-muted ms-2">{{ content.created_at|timesince }} ago</small>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center py-4">
+                        <i class="bi bi-inbox text-muted" style="font-size: 2rem;"></i>
+                        <p class="text-muted mt-2">No content in this category yet.</p>
+                        <a href="{% url 'content:content_create' %}" class="btn btn-sm btn-primary">
+                            <i class="bi bi-plus-lg"></i> Add Content
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent Events -->
+    <div class="col-lg-6 mb-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Recent Events</h5>
+                <a href="{% url 'content:event_list' %}?category={{ category.id }}" class="btn btn-sm btn-outline-primary">
+                    View All
+                </a>
+            </div>
+            <div class="card-body">
+                {% if event_list %}
+                    {% for event in event_list %}
+                    <div class="d-flex align-items-center mb-3 pb-3 {% if not forloop.last %}border-bottom{% endif %}">
+                        {% if event.thumbnail %}
+                            <img src="{{ event.thumbnail.url }}" alt="{{ event.title }}" 
+                                 class="rounded me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                        {% else %}
+                            <div class="bg-info rounded me-3 d-flex align-items-center justify-content-center" 
+                                 style="width: 50px; height: 50px;">
+                                <i class="bi bi-calendar-event text-white"></i>
+                            </div>
+                        {% endif %}
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1">
+                                <a href="{% url 'content:event_detail' event.pk %}" class="text-decoration-none">
+                                    {{ event.title|truncatechars:40 }}
+                                </a>
+                            </h6>
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-calendar text-primary me-1"></i>
+                                <small class="text-muted">{{ event.start_datetime|date:"M d, Y" }}</small>
+                                {% if event.is_live %}
+                                    <span class="badge badge-live ms-2">LIVE</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center py-4">
+                        <i class="bi bi-calendar-x text-muted" style="font-size: 2rem;"></i>
+                        <p class="text-muted mt-2">No events in this category yet.</p>
+                        <a href="{% url 'content:event_create' %}" class="btn btn-sm btn-primary">
+                            <i class="bi bi-plus-lg"></i> Add Event
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

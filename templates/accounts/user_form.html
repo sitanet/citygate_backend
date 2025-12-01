@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ title }} - CityGate Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">{{ title }}</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{% url 'accounts:user_list' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to List
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-lg"></i> Save User
+                            </button>
+                            <a href="{% url 'accounts:user_list' %}" class="btn btn-outline-secondary ms-2">
+                                Cancel
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">User Roles</h5>
+            </div>
+            <div class="card-body">
+                <h6>Admin:</h6>
+                <p class="small text-muted">Full access to all features and settings.</p>
+                
+                <h6>Content Manager:</h6>
+                <p class="small text-muted">Manage content, events, and categories.</p>
+                
+                <h6>Banner Manager:</h6>
+                <p class="small text-muted">Manage promotional banners and announcements.</p>
+                
+                <h6>Finance:</h6>
+                <p class="small text-muted">Access to financial reports and user management.</p>
+                
+                <h6>User:</h6>
+                <p class="small text-muted">Basic access to view dashboard only.</p>
+            </div>
+        </div>
+        
+               {% if user %}
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="mb-0">Current Profile Picture</h5>
+            </div>
+            <div class="card-body text-center">
+                {% if user.profile_image_url %}
+                    <img src="{{ user.profile_image_url }}" alt="Profile" 
+                         class="img-fluid rounded-circle" style="max-width: 150px;">
+                {% else %}
+                    <div class="bg-secondary rounded-circle mx-auto d-flex align-items-center justify-content-center" 
+                         style="width: 150px; height: 150px;">
+                        <i class="bi bi-person text-white" style="font-size: 3rem;"></i>
+                    </div>
+                    <p class="text-muted mt-2">No profile picture uploaded</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

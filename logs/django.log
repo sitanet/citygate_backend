@@ -1,0 +1,96 @@
+INFO 2025-11-30 23:02:37,266 autoreload 13852 13476 Watching for file changes with StatReloader
+INFO 2025-11-30 23:03:49,272 basehttp 13852 8128 "GET /content HTTP/1.1" 301 0
+INFO 2025-11-30 23:03:49,285 basehttp 13852 8820 "GET /content/ HTTP/1.1" 302 0
+INFO 2025-11-30 23:03:49,340 basehttp 13852 8820 "GET /accounts/login/?next=/content/ HTTP/1.1" 200 4662
+WARNING 2025-11-30 23:03:51,400 log 13852 8820 Not Found: /favicon.ico
+WARNING 2025-11-30 23:03:51,404 basehttp 13852 8820 "GET /favicon.ico HTTP/1.1" 404 5014
+INFO 2025-11-30 23:41:23,553 basehttp 13852 780 "POST /accounts/login/?next=/content/ HTTP/1.1" 200 5171
+INFO 2025-11-30 23:50:30,171 autoreload 13852 13476 C:\Users\User\Desktop\Development\the_citygate_backend\accounts\models.py changed, reloading.
+INFO 2025-11-30 23:50:31,424 autoreload 7920 8072 Watching for file changes with StatReloader
+INFO 2025-11-30 23:50:56,678 autoreload 7920 8072 C:\Users\User\Desktop\Development\the_citygate_backend\content\models.py changed, reloading.
+INFO 2025-11-30 23:50:57,698 autoreload 12748 15432 Watching for file changes with StatReloader
+INFO 2025-11-30 23:57:03,800 autoreload 9016 11680 Watching for file changes with StatReloader
+INFO 2025-11-30 23:59:23,884 autoreload 9016 11680 C:\Users\User\Desktop\Development\the_citygate_backend\api\serializers.py changed, reloading.
+INFO 2025-11-30 23:59:24,828 autoreload 8772 5804 Watching for file changes with StatReloader
+INFO 2025-11-30 23:59:55,571 autoreload 8772 5804 C:\Users\User\Desktop\Development\the_citygate_backend\banner\models.py changed, reloading.
+INFO 2025-11-30 23:59:56,661 autoreload 8744 4512 Watching for file changes with StatReloader
+INFO 2025-12-01 00:00:20,214 autoreload 8744 4512 C:\Users\User\Desktop\Development\the_citygate_backend\api\views.py changed, reloading.
+INFO 2025-12-01 00:00:21,149 autoreload 12800 14256 Watching for file changes with StatReloader
+INFO 2025-12-01 00:05:16,096 autoreload 8632 16076 Watching for file changes with StatReloader
+INFO 2025-12-01 01:24:08,737 autoreload 9820 3588 Watching for file changes with StatReloader
+INFO 2025-12-01 02:11:02,203 autoreload 9820 3588 C:\Users\User\Desktop\Development\the_citygate_backend\api\urls.py changed, reloading.
+INFO 2025-12-01 02:11:03,590 autoreload 5252 4992 Watching for file changes with StatReloader
+INFO 2025-12-01 02:11:11,511 autoreload 5252 4992 C:\Users\User\Desktop\Development\the_citygate_backend\api\urls.py changed, reloading.
+INFO 2025-12-01 02:11:12,597 autoreload 13200 6540 Watching for file changes with StatReloader
+INFO 2025-12-01 02:11:37,456 autoreload 13200 6540 C:\Users\User\Desktop\Development\the_citygate_backend\api\views.py changed, reloading.
+INFO 2025-12-01 02:11:38,458 autoreload 3504 15516 Watching for file changes with StatReloader
+INFO 2025-12-01 02:12:02,506 autoreload 3504 15516 C:\Users\User\Desktop\Development\the_citygate_backend\api\serializers.py changed, reloading.
+INFO 2025-12-01 02:12:03,496 autoreload 10100 7760 Watching for file changes with StatReloader
+ERROR 2025-12-01 02:31:33,634 exception 10100 8416 Invalid HTTP_HOST header: '192.168.43.57:8000'. You may need to add '192.168.43.57' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\utils\deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\http\request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '192.168.43.57:8000'. You may need to add '192.168.43.57' to ALLOWED_HOSTS.
+WARNING 2025-12-01 02:31:34,163 log 10100 8416 Bad Request: /api/auth/signup/
+WARNING 2025-12-01 02:31:34,164 basehttp 10100 8416 "POST /api/auth/signup/ HTTP/1.1" 400 24600
+ERROR 2025-12-01 02:33:13,681 exception 10100 10676 Invalid HTTP_HOST header: '192.168.43.57:8000'. You may need to add '192.168.43.57' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\utils\deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\http\request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '192.168.43.57:8000'. You may need to add '192.168.43.57' to ALLOWED_HOSTS.
+WARNING 2025-12-01 02:33:13,740 log 10100 10676 Bad Request: /api/auth/signup/
+WARNING 2025-12-01 02:33:13,745 basehttp 10100 10676 "POST /api/auth/signup/ HTTP/1.1" 400 24600
+INFO 2025-12-01 02:34:45,554 autoreload 10100 7760 C:\Users\User\Desktop\Development\the_citygate_backend\citygate_backend\settings.py changed, reloading.
+INFO 2025-12-01 02:34:47,005 autoreload 2256 2328 Watching for file changes with StatReloader
+ERROR 2025-12-01 02:34:58,919 log 2256 12604 Internal Server Error: /api/auth/signup/
+Traceback (most recent call last):
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\api\views.py", line 151, in signup_view
+    serializer = UserRegistrationSerializer(data=request.data)
+NameError: name 'UserRegistrationSerializer' is not defined
+ERROR 2025-12-01 02:34:58,925 basehttp 2256 12604 "POST /api/auth/signup/ HTTP/1.1" 500 25581
+INFO 2025-12-01 02:38:29,842 autoreload 2256 2328 C:\Users\User\Desktop\Development\the_citygate_backend\api\serializers.py changed, reloading.
+INFO 2025-12-01 02:38:31,055 autoreload 14420 12444 Watching for file changes with StatReloader
+INFO 2025-12-01 02:38:54,124 autoreload 14420 12444 C:\Users\User\Desktop\Development\the_citygate_backend\api\views.py changed, reloading.
+INFO 2025-12-01 02:38:55,221 autoreload 3972 10508 Watching for file changes with StatReloader
+INFO 2025-12-01 02:39:16,066 autoreload 3972 10508 C:\Users\User\Desktop\Development\the_citygate_backend\api\urls.py changed, reloading.
+INFO 2025-12-01 02:39:17,053 autoreload 8376 9032 Watching for file changes with StatReloader
+ERROR 2025-12-01 02:39:35,190 log 8376 11112 Internal Server Error: /api/auth/signup/
+ERROR 2025-12-01 02:39:35,191 basehttp 8376 11112 "POST /api/auth/signup/ HTTP/1.1" 500 265
+ERROR 2025-12-01 02:44:11,085 log 8376 10800 Internal Server Error: /api/auth/signup/
+ERROR 2025-12-01 02:44:11,086 basehttp 8376 10800 "POST /api/auth/signup/ HTTP/1.1" 500 265
+INFO 2025-12-01 02:52:09,617 autoreload 1688 12712 Watching for file changes with StatReloader
+INFO 2025-12-01 02:52:17,006 basehttp 1688 8360 "POST /api/auth/signup/ HTTP/1.1" 201 223
+WARNING 2025-12-01 02:52:36,814 log 1688 14896 Bad Request: /api/auth/signup/
+WARNING 2025-12-01 02:52:36,815 basehttp 1688 14896 "POST /api/auth/signup/ HTTP/1.1" 400 136
+INFO 2025-12-01 02:56:30,132 basehttp 1688 1692 "POST /api/auth/login/ HTTP/1.1" 200 185
+INFO 2025-12-01 02:57:31,019 basehttp 1688 6204 "POST /api/auth/login/ HTTP/1.1" 200 185
