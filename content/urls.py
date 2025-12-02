@@ -8,12 +8,14 @@ urlpatterns = [
     
     # Content URLs
     path('content/', views.content_list, name='content_list'),
+    path('content_detail/<int:pk>/', views.content_detail, name='content_detail'),
     path('content/create/', views.content_create, name='content_create'),
     path('content/<int:pk>/edit/', views.content_update, name='content_update'),
     path('content/<int:pk>/delete/', views.content_delete, name='content_delete'),
     
     # Event URLs
     path('events/', views.event_list, name='event_list'),
+    path('event_detail/<int:pk>/', views.event_detail, name='event_detail'),
     path('events/create/', views.event_create, name='event_create'),
     path('events/<int:pk>/edit/', views.event_update, name='event_update'),
     path('events/<int:pk>/delete/', views.event_delete, name='event_delete'),

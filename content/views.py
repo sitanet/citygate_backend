@@ -63,8 +63,7 @@ def dashboard(request):
     return render(request, 'content/dashboard.html', context)
 
 # Content Views
-@login_required
-@user_passes_test(can_manage_content)
+
 def content_list(request):
     """List all content with search and filtering"""
     search_query = request.GET.get('search', '')

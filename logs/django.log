@@ -94,3 +94,714 @@ WARNING 2025-12-01 02:52:36,814 log 1688 14896 Bad Request: /api/auth/signup/
 WARNING 2025-12-01 02:52:36,815 basehttp 1688 14896 "POST /api/auth/signup/ HTTP/1.1" 400 136
 INFO 2025-12-01 02:56:30,132 basehttp 1688 1692 "POST /api/auth/login/ HTTP/1.1" 200 185
 INFO 2025-12-01 02:57:31,019 basehttp 1688 6204 "POST /api/auth/login/ HTTP/1.1" 200 185
+INFO 2025-12-01 19:10:02,095 autoreload 10248 14584 Watching for file changes with StatReloader
+INFO 2025-12-02 07:01:08,923 autoreload 15156 13720 Watching for file changes with StatReloader
+WARNING 2025-12-02 07:02:26,587 log 15156 10572 Bad Request: /api/auth/signup/
+WARNING 2025-12-02 07:02:26,588 basehttp 15156 10572 "POST /api/auth/signup/ HTTP/1.1" 400 79
+ERROR 2025-12-02 07:02:55,727 log 15156 6900 Internal Server Error: /api/auth/signup/
+ERROR 2025-12-02 07:02:55,727 basehttp 15156 6900 "POST /api/auth/signup/ HTTP/1.1" 500 261
+ERROR 2025-12-02 07:04:36,343 log 15156 1720 Internal Server Error: /api/auth/signup/
+ERROR 2025-12-02 07:04:36,343 basehttp 15156 1720 "POST /api/auth/signup/ HTTP/1.1" 500 261
+ERROR 2025-12-02 07:05:15,368 log 15156 15180 Internal Server Error: /api/auth/login/
+Traceback (most recent call last):
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.UndefinedColumn: column accounts_customuser.email_verified does not exist
+LINE 1: ..."created_at", "accounts_customuser"."updated_at", "accounts_...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\api\views.py", line 23, in login_view
+    serializer.is_valid(raise_exception=True)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\rest_framework\serializers.py", line 227, in is_valid
+    self._validated_data = self.run_validation(self.initial_data)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\rest_framework\serializers.py", line 429, in run_validation
+    value = self.validate(value)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\api\serializers.py", line 145, in validate
+    user = authenticate(username=username, password=password)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\views\decorators\debug.py", line 42, in sensitive_variables_wrapper
+    return func(*func_args, **func_kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\contrib\auth\__init__.py", line 77, in authenticate
+    user = backend.authenticate(request, **credentials)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\contrib\auth\backends.py", line 46, in authenticate
+    user = UserModel._default_manager.get_by_natural_key(username)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\contrib\auth\base_user.py", line 54, in get_by_natural_key
+    return self.get(**{self.model.USERNAME_FIELD: username})
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\db\models\query.py", line 633, in get
+    num = len(clone)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\db\models\query.py", line 380, in __len__
+    self._fetch_all()
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\db\models\query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\db\models\sql\compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.ProgrammingError: column accounts_customuser.email_verified does not exist
+LINE 1: ..."created_at", "accounts_customuser"."updated_at", "accounts_...
+                                                             ^
+
+ERROR 2025-12-02 07:05:15,425 basehttp 15156 15180 "POST /api/auth/login/ HTTP/1.1" 500 29838
+INFO 2025-12-02 07:09:33,629 autoreload 13720 9240 Watching for file changes with StatReloader
+INFO 2025-12-02 07:10:40,576 basehttp 13720 7708 "POST /api/auth/signup/ HTTP/1.1" 201 198
+INFO 2025-12-02 07:15:02,561 autoreload 8156 12552 Watching for file changes with StatReloader
+INFO 2025-12-02 07:38:02,240 basehttp 8156 12176 "GET /api/content/recent/ HTTP/1.1" 200 52
+INFO 2025-12-02 07:38:02,256 basehttp 8156 14760 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 07:38:02,375 basehttp 8156 3948 "GET /api/content/live/ HTTP/1.1" 200 52
+INFO 2025-12-02 07:38:02,378 basehttp 8156 2208 "GET /api/content/?type=video HTTP/1.1" 200 52
+INFO 2025-12-02 07:42:29,608 basehttp 8156 14468 "GET /api/content/recent/ HTTP/1.1" 200 52
+INFO 2025-12-02 07:42:29,667 basehttp 8156 12888 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 07:42:29,688 basehttp 8156 6668 "GET /api/content/live/ HTTP/1.1" 200 52
+INFO 2025-12-02 07:42:29,694 basehttp 8156 8520 "GET /api/content/?type=video HTTP/1.1" 200 52
+INFO 2025-12-02 07:42:43,532 basehttp 8156 2080 "GET /api/content/?type=live HTTP/1.1" 200 52
+INFO 2025-12-02 07:42:45,866 basehttp 8156 11868 "GET /api/content/?type=audio HTTP/1.1" 200 52
+INFO 2025-12-02 07:44:26,034 basehttp 8156 1612 "GET /api/content/?type=video HTTP/1.1" 200 52
+INFO 2025-12-02 07:44:26,045 basehttp 8156 4208 "GET /api/content/live/ HTTP/1.1" 200 52
+INFO 2025-12-02 09:36:04,420 autoreload 9384 14048 Watching for file changes with StatReloader
+INFO 2025-12-02 09:43:09,609 basehttp 9384 11056 "POST /api/auth/login/ HTTP/1.1" 200 185
+INFO 2025-12-02 09:43:11,656 basehttp 9384 4728 "GET /api/content/recent/ HTTP/1.1" 200 52
+INFO 2025-12-02 09:43:11,656 basehttp 9384 6352 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 09:43:11,656 basehttp 9384 13224 "GET /api/content/?type=video HTTP/1.1" 200 52
+INFO 2025-12-02 09:43:11,659 basehttp 9384 7324 "GET /api/content/live/ HTTP/1.1" 200 52
+INFO 2025-12-02 09:43:30,282 basehttp 9384 9528 "GET /api/content/recent/ HTTP/1.1" 200 52
+INFO 2025-12-02 09:43:30,286 basehttp 9384 11328 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 09:43:37,297 basehttp 9384 4848 "GET /api/content/recent/ HTTP/1.1" 200 52
+INFO 2025-12-02 09:43:37,302 basehttp 9384 13180 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 09:43:49,066 basehttp 9384 9568 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 09:43:49,354 basehttp 9384 1212 "GET /api/content/recent/ HTTP/1.1" 200 52
+INFO 2025-12-02 11:47:16,655 basehttp 9384 8540 "POST /api/auth/login/ HTTP/1.1" 200 185
+INFO 2025-12-02 11:47:19,043 basehttp 9384 14468 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 11:47:19,053 basehttp 9384 4812 "GET /api/content/live/ HTTP/1.1" 200 52
+INFO 2025-12-02 11:47:19,057 basehttp 9384 3496 "GET /api/content/?type=video HTTP/1.1" 200 52
+INFO 2025-12-02 11:47:19,111 basehttp 9384 8636 "GET /api/content/recent/ HTTP/1.1" 200 52
+INFO 2025-12-02 11:47:54,171 basehttp 9384 240 "GET /content HTTP/1.1" 301 0
+INFO 2025-12-02 11:47:54,269 basehttp 9384 124 "GET /content/ HTTP/1.1" 302 0
+INFO 2025-12-02 11:47:54,367 basehttp 9384 124 "GET /accounts/login/?next=/content/ HTTP/1.1" 200 4662
+WARNING 2025-12-02 11:47:57,285 log 9384 124 Not Found: /favicon.ico
+WARNING 2025-12-02 11:47:57,288 basehttp 9384 124 "GET /favicon.ico HTTP/1.1" 404 5014
+INFO 2025-12-02 11:47:59,741 basehttp 9384 124 "POST /accounts/login/?next=/content/ HTTP/1.1" 302 0
+INFO 2025-12-02 11:47:59,772 basehttp 9384 124 "GET /content/ HTTP/1.1" 302 0
+INFO 2025-12-02 11:47:59,816 basehttp 9384 124 "GET /accounts/login/?next=/content/ HTTP/1.1" 200 4662
+INFO 2025-12-02 11:49:18,721 autoreload 4196 16256 Watching for file changes with StatReloader
+INFO 2025-12-02 11:49:26,796 basehttp 4196 14412 "POST /accounts/login/?next=/content/ HTTP/1.1" 302 0
+INFO 2025-12-02 11:49:26,812 basehttp 4196 14412 "GET /content/ HTTP/1.1" 302 0
+INFO 2025-12-02 11:49:26,840 basehttp 4196 14412 "GET /accounts/login/?next=/content/ HTTP/1.1" 200 4662
+WARNING 2025-12-02 11:49:36,030 log 4196 3032 Not Found: /admin
+WARNING 2025-12-02 11:49:36,031 basehttp 4196 3032 "GET /admin HTTP/1.1" 404 4996
+INFO 2025-12-02 11:49:42,509 basehttp 4196 3032 "GET /content/ HTTP/1.1" 302 0
+INFO 2025-12-02 11:49:42,526 basehttp 4196 3032 "GET /accounts/login/?next=/content/ HTTP/1.1" 200 4662
+INFO 2025-12-02 11:49:54,597 basehttp 4196 12084 "POST /accounts/login/?next=/content/ HTTP/1.1" 302 0
+INFO 2025-12-02 11:49:54,609 basehttp 4196 12084 "GET /content/ HTTP/1.1" 302 0
+INFO 2025-12-02 11:49:54,621 basehttp 4196 12084 "GET /accounts/login/?next=/content/ HTTP/1.1" 200 4662
+INFO 2025-12-02 11:50:29,096 basehttp 4196 8276 "POST /accounts/login/?next=/content/ HTTP/1.1" 302 0
+INFO 2025-12-02 11:50:29,108 basehttp 4196 8276 "GET /content/ HTTP/1.1" 302 0
+INFO 2025-12-02 11:50:29,120 basehttp 4196 8276 "GET /accounts/login/?next=/content/ HTTP/1.1" 200 4662
+INFO 2025-12-02 11:51:33,766 autoreload 4196 16256 C:\Users\User\Desktop\Development\the_citygate_backend\content\views.py changed, reloading.
+INFO 2025-12-02 11:51:34,994 autoreload 4512 2084 Watching for file changes with StatReloader
+INFO 2025-12-02 11:51:41,874 basehttp 4512 15924 "GET /content/ HTTP/1.1" 302 0
+INFO 2025-12-02 11:51:41,915 basehttp 4512 15924 "GET /accounts/login/?next=/content/ HTTP/1.1" 200 4662
+INFO 2025-12-02 11:52:08,553 basehttp 4512 14464 "GET /content/ HTTP/1.1" 302 0
+INFO 2025-12-02 11:52:08,565 basehttp 4512 14464 "GET /accounts/login/?next=/content/ HTTP/1.1" 200 4662
+INFO 2025-12-02 11:52:16,166 basehttp 4512 612 "GET /content HTTP/1.1" 301 0
+INFO 2025-12-02 11:52:16,172 basehttp 4512 3740 "GET /content/ HTTP/1.1" 302 0
+INFO 2025-12-02 11:52:16,181 basehttp 4512 3740 "GET /accounts/login/?next=/content/ HTTP/1.1" 200 4662
+WARNING 2025-12-02 11:52:17,530 log 4512 3740 Not Found: /favicon.ico
+WARNING 2025-12-02 11:52:17,531 basehttp 4512 3740 "GET /favicon.ico HTTP/1.1" 404 5014
+INFO 2025-12-02 11:52:39,617 basehttp 4512 15396 "POST /accounts/login/?next=/content/ HTTP/1.1" 302 0
+INFO 2025-12-02 11:52:39,626 basehttp 4512 15396 "GET /content/ HTTP/1.1" 302 0
+INFO 2025-12-02 11:52:39,637 basehttp 4512 15396 "GET /accounts/login/?next=/content/ HTTP/1.1" 200 4662
+INFO 2025-12-02 11:55:16,393 basehttp 4512 7456 "POST /accounts/login/?next=/content/ HTTP/1.1" 302 0
+INFO 2025-12-02 11:55:16,576 basehttp 4512 7456 "GET /content/ HTTP/1.1" 200 11684
+INFO 2025-12-02 11:55:29,794 basehttp 4512 15732 "GET /banner/ HTTP/1.1" 200 10330
+INFO 2025-12-02 11:55:32,223 basehttp 4512 15732 "GET /banner/create/ HTTP/1.1" 200 15870
+INFO 2025-12-02 11:57:49,263 basehttp 4512 12356 "POST /banner/create/ HTTP/1.1" 302 0
+INFO 2025-12-02 11:57:49,312 basehttp 4512 12356 "GET /banner/ HTTP/1.1" 200 13928
+INFO 2025-12-02 11:57:58,728 basehttp 4512 5260 "GET /api/content/recent/ HTTP/1.1" 200 52
+INFO 2025-12-02 11:57:58,728 basehttp 4512 4788 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 11:58:18,880 basehttp 4512 16380 "GET /accounts/users/ HTTP/1.1" 200 17257
+INFO 2025-12-02 11:58:22,082 basehttp 4512 2500 "GET /api/content/recent/ HTTP/1.1" 200 52
+INFO 2025-12-02 11:58:22,211 basehttp 4512 14500 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 11:58:22,217 basehttp 4512 8912 "GET /api/content/live/ HTTP/1.1" 200 52
+INFO 2025-12-02 11:58:22,220 basehttp 4512 12172 "GET /api/content/?type=video HTTP/1.1" 200 52
+INFO 2025-12-02 11:58:26,589 basehttp 4512 5660 "GET /content/content/ HTTP/1.1" 200 11117
+INFO 2025-12-02 11:58:30,144 basehttp 4512 5660 "GET /content/content/create/ HTTP/1.1" 200 15799
+ERROR 2025-12-02 12:01:48,390 log 4512 5956 Internal Server Error: /content/content/create/
+Traceback (most recent call last):
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\content\views.py", line 138, in content_create
+    return redirect('content:content_detail', pk=content.pk)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\shortcuts.py", line 48, in redirect
+    return redirect_class(resolve_url(to, *args, **kwargs))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\shortcuts.py", line 145, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'content_detail' not found. 'content_detail' is not a valid view function or pattern name.
+ERROR 2025-12-02 12:01:48,400 basehttp 4512 5956 "POST /content/content/create/ HTTP/1.1" 500 113285
+INFO 2025-12-02 12:01:55,709 basehttp 4512 12024 "GET /api/content/recent/ HTTP/1.1" 200 706
+INFO 2025-12-02 12:01:55,714 basehttp 4512 11156 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:01:57,836 basehttp 4512 12208 "GET /api/content/recent/ HTTP/1.1" 200 706
+INFO 2025-12-02 12:01:57,848 basehttp 4512 2700 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:01:59,524 basehttp 4512 14184 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:01:59,538 basehttp 4512 7408 "GET /api/content/recent/ HTTP/1.1" 200 706
+INFO 2025-12-02 12:02:15,114 basehttp 4512 13628 "GET /api/content/recent/ HTTP/1.1" 200 706
+INFO 2025-12-02 12:02:15,226 basehttp 4512 2636 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:02:15,263 basehttp 4512 14252 "GET /api/content/?type=video HTTP/1.1" 200 52
+INFO 2025-12-02 12:02:15,289 basehttp 4512 6924 "GET /api/content/live/ HTTP/1.1" 200 706
+INFO 2025-12-02 12:02:19,822 basehttp 4512 8656 "GET /content/content/create/ HTTP/1.1" 200 16284
+INFO 2025-12-02 12:02:26,133 basehttp 4512 8748 "GET /content/events/ HTTP/1.1" 200 10572
+INFO 2025-12-02 12:02:28,074 basehttp 4512 8748 "GET /content/events/create/ HTTP/1.1" 200 11614
+ERROR 2025-12-02 12:02:56,192 log 4512 13724 Internal Server Error: /content/events/create/
+Traceback (most recent call last):
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\content\views.py", line 261, in event_create
+    return redirect('content:event_detail', pk=event.pk)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\shortcuts.py", line 48, in redirect
+    return redirect_class(resolve_url(to, *args, **kwargs))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\shortcuts.py", line 145, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'event_detail' not found. 'event_detail' is not a valid view function or pattern name.
+ERROR 2025-12-02 12:02:56,198 basehttp 4512 13724 "POST /content/events/create/ HTTP/1.1" 500 112018
+INFO 2025-12-02 12:02:58,955 basehttp 4512 13724 "GET /content/events/create/ HTTP/1.1" 200 12101
+INFO 2025-12-02 12:03:04,125 basehttp 4512 8216 "GET /content/categories/ HTTP/1.1" 200 8914
+INFO 2025-12-02 12:03:06,195 basehttp 4512 8216 "GET /content/categories/create/ HTTP/1.1" 200 12200
+ERROR 2025-12-02 12:03:28,935 log 4512 440 Internal Server Error: /content/categories/create/
+Traceback (most recent call last):
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\content\views.py", line 362, in category_create
+    return redirect('content:category_detail', pk=category.pk)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\shortcuts.py", line 48, in redirect
+    return redirect_class(resolve_url(to, *args, **kwargs))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\shortcuts.py", line 145, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'category_detail' not found. 'category_detail' is not a valid view function or pattern name.
+ERROR 2025-12-02 12:03:28,941 basehttp 4512 440 "POST /content/categories/create/ HTTP/1.1" 500 111479
+INFO 2025-12-02 12:03:33,564 basehttp 4512 4840 "GET /content/categories/create/ HTTP/1.1" 200 12685
+INFO 2025-12-02 12:03:40,305 basehttp 4512 4876 "GET /api/content/recent/ HTTP/1.1" 200 710
+INFO 2025-12-02 12:03:40,305 basehttp 4512 8964 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:03:44,740 basehttp 4512 4204 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:03:44,743 basehttp 4512 14060 "GET /api/content/recent/ HTTP/1.1" 200 711
+INFO 2025-12-02 12:03:46,212 basehttp 4512 16256 "GET /api/content/recent/ HTTP/1.1" 200 711
+INFO 2025-12-02 12:03:46,219 basehttp 4512 9076 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:16:17,603 basehttp 4512 4840 "POST /api/auth/login/ HTTP/1.1" 200 185
+INFO 2025-12-02 12:16:19,851 basehttp 4512 5780 "GET /api/content/recent/ HTTP/1.1" 200 712
+INFO 2025-12-02 12:16:19,866 basehttp 4512 13888 "GET /api/content/?type=video HTTP/1.1" 200 52
+INFO 2025-12-02 12:16:19,866 basehttp 4512 3936 "GET /api/content/live/ HTTP/1.1" 200 712
+INFO 2025-12-02 12:16:20,120 basehttp 4512 15500 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+ERROR 2025-12-02 12:16:52,719 log 4512 8284 Internal Server Error: /content/events/
+Traceback (most recent call last):
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\content\views.py", line 248, in event_list
+    return render(request, 'content/event_list.html', context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\defaulttags.py", line 238, in render
+    nodelist.append(node.render_annotated(context))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\defaulttags.py", line 471, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'event_detail' not found. 'event_detail' is not a valid view function or pattern name.
+ERROR 2025-12-02 12:16:52,779 basehttp 4512 8284 "GET /content/events/ HTTP/1.1" 500 231654
+ERROR 2025-12-02 12:17:03,223 log 4512 8284 Internal Server Error: /content/events/
+Traceback (most recent call last):
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\content\views.py", line 248, in event_list
+    return render(request, 'content/event_list.html', context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\defaulttags.py", line 238, in render
+    nodelist.append(node.render_annotated(context))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\defaulttags.py", line 471, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'event_detail' not found. 'event_detail' is not a valid view function or pattern name.
+ERROR 2025-12-02 12:17:03,235 basehttp 4512 8284 "GET /content/events/ HTTP/1.1" 500 231653
+INFO 2025-12-02 12:17:34,342 basehttp 4512 8284 "POST /content/categories/create/ HTTP/1.1" 200 12820
+ERROR 2025-12-02 12:18:09,643 log 4512 8284 Internal Server Error: /content/content/
+Traceback (most recent call last):
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\content\views.py", line 115, in content_list
+    return render(request, 'content/content_list.html', context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\defaulttags.py", line 238, in render
+    nodelist.append(node.render_annotated(context))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\defaulttags.py", line 471, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'content_detail' not found. 'content_detail' is not a valid view function or pattern name.
+ERROR 2025-12-02 12:18:09,663 basehttp 4512 8284 "GET /content/content/ HTTP/1.1" 500 225605
+INFO 2025-12-02 12:19:46,661 autoreload 4512 2084 C:\Users\User\Desktop\Development\the_citygate_backend\content\urls.py changed, reloading.
+INFO 2025-12-02 12:19:48,403 autoreload 9012 4700 Watching for file changes with StatReloader
+ERROR 2025-12-02 12:19:55,757 log 9012 12036 Internal Server Error: /content/content/
+Traceback (most recent call last):
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\content\views.py", line 115, in content_list
+    return render(request, 'content/content_list.html', context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\defaulttags.py", line 238, in render
+    nodelist.append(node.render_annotated(context))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\defaulttags.py", line 471, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'content_detail' with arguments '(1,)' not found. 1 pattern(s) tried: ['content/content_detail/\\Z']
+ERROR 2025-12-02 12:19:55,781 basehttp 9012 12036 "GET /content/content/ HTTP/1.1" 500 227268
+INFO 2025-12-02 12:20:46,070 autoreload 9012 4700 C:\Users\User\Desktop\Development\the_citygate_backend\content\urls.py changed, reloading.
+INFO 2025-12-02 12:20:47,139 autoreload 4920 11428 Watching for file changes with StatReloader
+INFO 2025-12-02 12:21:11,196 basehttp 4920 3480 "GET /content/content/ HTTP/1.1" 200 14076
+ERROR 2025-12-02 12:21:15,237 log 4920 3480 Internal Server Error: /content/events/
+Traceback (most recent call last):
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\content\views.py", line 248, in event_list
+    return render(request, 'content/event_list.html', context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\defaulttags.py", line 238, in render
+    nodelist.append(node.render_annotated(context))
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\template\defaulttags.py", line 471, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\User\Desktop\Development\the_citygate_backend\env\lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'event_detail' not found. 'event_detail' is not a valid view function or pattern name.
+ERROR 2025-12-02 12:21:15,260 basehttp 4920 3480 "GET /content/events/ HTTP/1.1" 500 231644
+INFO 2025-12-02 12:22:38,307 autoreload 4920 11428 C:\Users\User\Desktop\Development\the_citygate_backend\content\urls.py changed, reloading.
+INFO 2025-12-02 12:22:39,386 autoreload 16040 11172 Watching for file changes with StatReloader
+INFO 2025-12-02 12:22:43,568 basehttp 16040 14176 "GET /content/events/ HTTP/1.1" 200 13895
+INFO 2025-12-02 12:22:48,781 basehttp 16040 14176 "GET /content/events/1/edit/ HTTP/1.1" 200 12490
+INFO 2025-12-02 12:22:57,829 basehttp 16040 14176 "POST /content/events/1/edit/ HTTP/1.1" 302 0
+INFO 2025-12-02 12:22:57,900 basehttp 16040 14176 "GET /content/event_detail/1/ HTTP/1.1" 200 11600
+INFO 2025-12-02 12:23:11,150 basehttp 16040 9156 "GET /api/content/recent/ HTTP/1.1" 200 712
+INFO 2025-12-02 12:23:11,261 basehttp 16040 3036 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:23:21,208 basehttp 16040 14176 "GET /content/events/ HTTP/1.1" 200 14004
+INFO 2025-12-02 12:23:26,960 basehttp 16040 14176 "GET /content/events/1/edit/ HTTP/1.1" 200 12490
+INFO 2025-12-02 12:24:57,996 basehttp 16040 14176 "POST /content/events/1/edit/ HTTP/1.1" 302 0
+INFO 2025-12-02 12:24:58,032 basehttp 16040 14176 "GET /content/event_detail/1/ HTTP/1.1" 200 11600
+INFO 2025-12-02 12:25:07,939 basehttp 16040 8776 "GET /api/content/recent/ HTTP/1.1" 200 712
+INFO 2025-12-02 12:25:08,056 basehttp 16040 8644 "GET /api/events/upcoming/ HTTP/1.1" 200 401
+INFO 2025-12-02 12:25:24,281 basehttp 16040 14176 "GET /content/events/1/edit/ HTTP/1.1" 200 12490
+INFO 2025-12-02 12:26:35,723 basehttp 16040 14176 "POST /content/events/1/edit/ HTTP/1.1" 302 0
+INFO 2025-12-02 12:26:35,746 basehttp 16040 14176 "GET /content/event_detail/1/ HTTP/1.1" 200 11600
+INFO 2025-12-02 12:26:43,791 basehttp 16040 14872 "GET /api/content/recent/ HTTP/1.1" 200 712
+INFO 2025-12-02 12:26:43,894 basehttp 16040 15296 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:26:48,981 basehttp 16040 11244 "GET /api/content/recent/ HTTP/1.1" 200 712
+INFO 2025-12-02 12:26:49,093 basehttp 16040 9052 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:26:54,497 basehttp 16040 14176 "GET /content/events/1/edit/ HTTP/1.1" 200 12486
+INFO 2025-12-02 12:27:19,102 basehttp 16040 14176 "POST /content/events/1/edit/ HTTP/1.1" 302 0
+INFO 2025-12-02 12:27:19,123 basehttp 16040 14176 "GET /content/event_detail/1/ HTTP/1.1" 200 11600
+INFO 2025-12-02 12:27:28,252 basehttp 16040 8520 "GET /api/content/recent/ HTTP/1.1" 200 712
+INFO 2025-12-02 12:27:28,370 basehttp 16040 240 "GET /api/events/upcoming/ HTTP/1.1" 200 401
+INFO 2025-12-02 12:28:07,697 basehttp 16040 14176 "GET /content/content/ HTTP/1.1" 200 14076
+INFO 2025-12-02 12:28:11,583 basehttp 16040 14176 "GET /content/content/1/edit/ HTTP/1.1" 200 16850
+INFO 2025-12-02 12:28:19,805 basehttp 16040 14176 "POST /content/content/1/edit/ HTTP/1.1" 302 0
+INFO 2025-12-02 12:28:19,831 basehttp 16040 14176 "GET /content/content_detail/1/ HTTP/1.1" 200 12385
+INFO 2025-12-02 12:28:25,733 basehttp 16040 2088 "GET /api/content/recent/ HTTP/1.1" 200 713
+INFO 2025-12-02 12:28:25,826 basehttp 16040 13644 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:28:28,967 basehttp 16040 14576 "GET /api/content/recent/ HTTP/1.1" 200 713
+INFO 2025-12-02 12:28:29,059 basehttp 16040 3496 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:28:35,395 basehttp 16040 4832 "GET /api/content/recent/ HTTP/1.1" 200 713
+INFO 2025-12-02 12:28:35,611 basehttp 16040 10028 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:28:38,409 basehttp 16040 14176 "GET /content/events/ HTTP/1.1" 200 14004
+INFO 2025-12-02 12:28:41,927 basehttp 16040 14176 "GET /content/events/1/edit/ HTTP/1.1" 200 12486
+INFO 2025-12-02 12:29:02,838 basehttp 16040 14176 "POST /content/events/1/edit/ HTTP/1.1" 302 0
+INFO 2025-12-02 12:29:02,862 basehttp 16040 14176 "GET /content/event_detail/1/ HTTP/1.1" 200 11600
+INFO 2025-12-02 12:29:05,445 basehttp 16040 13592 "GET /api/content/recent/ HTTP/1.1" 200 713
+INFO 2025-12-02 12:29:05,539 basehttp 16040 10156 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:29:08,887 basehttp 16040 15608 "GET /api/content/recent/ HTTP/1.1" 200 713
+INFO 2025-12-02 12:29:08,984 basehttp 16040 2408 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:29:12,980 basehttp 16040 14176 "GET /content/events/ HTTP/1.1" 200 14004
+INFO 2025-12-02 12:29:14,588 basehttp 16040 14176 "GET /content/events/1/edit/ HTTP/1.1" 200 12486
+INFO 2025-12-02 12:29:42,999 basehttp 16040 14176 "POST /content/events/1/edit/ HTTP/1.1" 302 0
+INFO 2025-12-02 12:29:43,028 basehttp 16040 14176 "GET /content/event_detail/1/ HTTP/1.1" 200 11610
+INFO 2025-12-02 12:29:45,658 basehttp 16040 14176 "GET /content/events/ HTTP/1.1" 200 13870
+INFO 2025-12-02 12:29:52,881 basehttp 16040 14928 "GET /api/content/recent/ HTTP/1.1" 200 713
+INFO 2025-12-02 12:29:52,993 basehttp 16040 12136 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:29:57,117 basehttp 16040 5300 "GET /api/content/recent/ HTTP/1.1" 200 713
+INFO 2025-12-02 12:29:57,246 basehttp 16040 15380 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:29:59,077 basehttp 16040 9092 "GET /api/content/recent/ HTTP/1.1" 200 713
+INFO 2025-12-02 12:29:59,175 basehttp 16040 2136 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:30:00,821 basehttp 16040 5508 "GET /api/content/recent/ HTTP/1.1" 200 713
+INFO 2025-12-02 12:30:00,926 basehttp 16040 12184 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:30:06,890 basehttp 16040 14176 "GET /content/events/1/edit/ HTTP/1.1" 200 12478
+INFO 2025-12-02 12:30:36,132 basehttp 16040 14176 "POST /content/events/1/edit/ HTTP/1.1" 302 0
+INFO 2025-12-02 12:30:36,152 basehttp 16040 14176 "GET /content/event_detail/1/ HTTP/1.1" 200 11610
+WARNING 2025-12-02 12:30:46,328 log 16040 14176 Not Found: /content/events/1/toggle-live/
+WARNING 2025-12-02 12:30:46,329 basehttp 16040 14176 "POST /content/events/1/toggle-live/ HTTP/1.1" 404 8319
+INFO 2025-12-02 12:30:52,150 basehttp 16040 14176 "GET /content/events/ HTTP/1.1" 200 13870
+INFO 2025-12-02 12:30:54,231 basehttp 16040 14176 "GET /content/events/1/edit/ HTTP/1.1" 200 12478
+INFO 2025-12-02 12:31:17,579 basehttp 16040 14176 "POST /content/events/1/edit/ HTTP/1.1" 302 0
+INFO 2025-12-02 12:31:17,598 basehttp 16040 14176 "GET /content/event_detail/1/ HTTP/1.1" 200 11610
+INFO 2025-12-02 12:31:22,525 basehttp 16040 9568 "GET /api/content/recent/ HTTP/1.1" 200 713
+INFO 2025-12-02 12:31:22,623 basehttp 16040 8632 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+WARNING 2025-12-02 12:31:27,606 log 16040 14176 Not Found: /content/events/1/toggle-live/
+WARNING 2025-12-02 12:31:27,607 basehttp 16040 14176 "POST /content/events/1/toggle-live/ HTTP/1.1" 404 8319
+WARNING 2025-12-02 12:31:32,302 log 16040 14176 Not Found: /content/events/1/toggle-live/
+WARNING 2025-12-02 12:31:32,304 basehttp 16040 14176 "POST /content/events/1/toggle-live/ HTTP/1.1" 404 8319
+INFO 2025-12-02 12:32:28,536 basehttp 16040 14176 "GET /banner/ HTTP/1.1" 200 13461
+INFO 2025-12-02 12:32:31,064 basehttp 16040 14176 "GET /banner/1/edit/ HTTP/1.1" 200 18816
+INFO 2025-12-02 12:33:00,124 basehttp 16040 14176 "POST /banner/1/edit/ HTTP/1.1" 302 0
+INFO 2025-12-02 12:33:00,150 basehttp 16040 14176 "GET /banner/ HTTP/1.1" 200 13928
+INFO 2025-12-02 12:33:07,561 basehttp 16040 2424 "GET /api/content/recent/ HTTP/1.1" 200 713
+INFO 2025-12-02 12:33:07,705 basehttp 16040 7272 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:33:13,735 basehttp 16040 4084 "GET /api/content/recent/ HTTP/1.1" 200 713
+INFO 2025-12-02 12:33:13,833 basehttp 16040 3636 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:33:30,524 basehttp 16040 14176 "GET /banner/1/edit/ HTTP/1.1" 200 18816
+INFO 2025-12-02 12:33:34,966 basehttp 16040 9356 "GET /api/content/recent/ HTTP/1.1" 200 713
+INFO 2025-12-02 12:33:35,062 basehttp 16040 15136 "GET /api/content/?type=video HTTP/1.1" 200 52
+INFO 2025-12-02 12:33:35,065 basehttp 16040 6960 "GET /api/content/live/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:33:36,412 basehttp 16040 6148 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:34:43,727 basehttp 16040 7260 "GET /api/content/recent/ HTTP/1.1" 200 713
+INFO 2025-12-02 12:34:43,873 basehttp 16040 5220 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:35:58,827 basehttp 16040 14176 "POST /banner/1/edit/ HTTP/1.1" 302 0
+INFO 2025-12-02 12:35:58,860 basehttp 16040 14176 "GET /banner/ HTTP/1.1" 200 13928
+INFO 2025-12-02 12:36:03,275 basehttp 16040 14176 "GET /content/events/ HTTP/1.1" 200 13870
+INFO 2025-12-02 12:36:05,910 basehttp 16040 14176 "GET /content/events/1/edit/ HTTP/1.1" 200 12478
+INFO 2025-12-02 12:36:17,894 basehttp 16040 14176 "POST /content/events/1/edit/ HTTP/1.1" 302 0
+INFO 2025-12-02 12:36:17,913 basehttp 16040 14176 "GET /content/event_detail/1/ HTTP/1.1" 200 11610
+WARNING 2025-12-02 12:36:35,726 log 16040 4980 Not Found: /content/events/1/toggle-live/
+WARNING 2025-12-02 12:36:35,727 basehttp 16040 4980 "POST /content/events/1/toggle-live/ HTTP/1.1" 404 8319
+INFO 2025-12-02 12:36:36,942 basehttp 16040 15732 "GET /api/content/recent/ HTTP/1.1" 200 713
+INFO 2025-12-02 12:36:37,056 basehttp 16040 1948 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:36:39,849 basehttp 16040 3380 "GET /api/content/recent/ HTTP/1.1" 200 713
+INFO 2025-12-02 12:36:39,955 basehttp 16040 6288 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:36:42,969 basehttp 16040 4980 "GET /content/events/1/edit/ HTTP/1.1" 200 12328
+INFO 2025-12-02 12:37:07,927 basehttp 16040 4980 "POST /content/events/1/edit/ HTTP/1.1" 302 0
+INFO 2025-12-02 12:37:07,951 basehttp 16040 4980 "GET /content/event_detail/1/ HTTP/1.1" 200 11610
+INFO 2025-12-02 12:37:19,251 basehttp 16040 32 "GET /api/content/recent/ HTTP/1.1" 200 713
+INFO 2025-12-02 12:37:19,379 basehttp 16040 5156 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+WARNING 2025-12-02 12:37:25,414 log 16040 4980 Not Found: /content/events/1/toggle-live/
+WARNING 2025-12-02 12:37:25,415 basehttp 16040 4980 "POST /content/events/1/toggle-live/ HTTP/1.1" 404 8319
+INFO 2025-12-02 12:38:40,028 basehttp 16040 13656 "GET /api/content/recent/ HTTP/1.1" 200 713
+INFO 2025-12-02 12:38:40,195 basehttp 16040 16292 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:41:07,754 basehttp 16040 12088 "POST /api/auth/login/ HTTP/1.1" 200 185
+INFO 2025-12-02 12:41:10,334 basehttp 16040 4868 "GET /api/auth/current-user/ HTTP/1.1" 200 125
+INFO 2025-12-02 12:41:10,338 basehttp 16040 7136 "GET /api/content/recent/ HTTP/1.1" 200 713
+INFO 2025-12-02 12:41:10,392 basehttp 16040 2520 "GET /api/content/?type=video HTTP/1.1" 200 52
+INFO 2025-12-02 12:41:10,422 basehttp 16040 4200 "GET /api/content/live/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:41:10,449 basehttp 16040 4212 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:42:05,895 basehttp 16040 7820 "GET /accounts/users/ HTTP/1.1" 200 17257
+INFO 2025-12-02 12:42:09,157 basehttp 16040 7820 "GET /content/content/ HTTP/1.1" 200 13943
+INFO 2025-12-02 12:42:11,162 basehttp 16040 16200 "GET /content/ HTTP/1.1" 200 12591
+INFO 2025-12-02 12:53:56,147 basehttp 16040 16256 "POST /api/auth/login/ HTTP/1.1" 200 185
+INFO 2025-12-02 12:53:58,583 basehttp 16040 10020 "GET /api/content/recent/ HTTP/1.1" 200 713
+INFO 2025-12-02 12:53:58,621 basehttp 16040 10076 "GET /api/events/upcoming/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:53:58,621 basehttp 16040 9212 "GET /api/auth/current-user/ HTTP/1.1" 200 125
+INFO 2025-12-02 12:53:58,639 basehttp 16040 2408 "GET /api/content/live/ HTTP/1.1" 200 52
+INFO 2025-12-02 12:53:58,660 basehttp 16040 5996 "GET /api/content/?type=video HTTP/1.1" 200 52
