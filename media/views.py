@@ -2,212 +2,210 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.db.models import Q, Count
+from django.utils import timezone
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.utils import timezone
 from .models import MediaContent, MediaViewer
 from content.models import ServiceCategory
+from .forms import MediaContentForm
 import json
 
-def is_staff_user(user):
-    return user.is_authenticated and user.is_staff
+def can_manage_content(user):
+    """Check if user can manage content - following existing pattern"""
+    return user.role in ['admin', 'content'] or user.is_superuser
+
+def can_view_content(user):
+    """Check if user can view content dashboard - following existing pattern"""
+    return user.role in ['admin', 'content', 'finance', 'banner'] or user.is_superuser
 
 @login_required
-@user_passes_test(is_staff_user)
-def media_management_view(request):
-    """Main media management dashboard"""
-    media_list = MediaContent.objects.all().order_by('-created_at')
+@user_passes_test(can_view_content)
+def dashboard(request):
+    """Main dashboard for media management"""
+    # Get recent media content
+    recent_media = MediaContent.objects.filter(status='published').order_by('-created_at')[:5]
     
-    # Filter by content type
-    content_type = request.GET.get('type')
-    if content_type:
-        media_list = media_list.filter(content_type=content_type)
+    # Get live content
+    live_media = MediaContent.objects.filter(is_live=True, status='published')
     
-    # Filter by status
-    status_filter = request.GET.get('status')
-    if status_filter:
-        media_list = media_list.filter(status=status_filter)
-    
-    # Search
-    search_query = request.GET.get('search')
-    if search_query:
-        media_list = media_list.filter(title__icontains=search_query)
-    
-    # Pagination
-    paginator = Paginator(media_list, 20)
-    page_number = request.GET.get('page')
-    media_page = paginator.get_page(page_number)
-    
-    context = {
-        'media_page': media_page,
-        'content_types': MediaContent.CONTENT_TYPE_CHOICES,
-        'status_choices': MediaContent.STATUS_CHOICES,
-        'current_type': content_type,
-        'current_status': status_filter,
-        'search_query': search_query,
+    # Get statistics
+    stats = {
         'total_media': MediaContent.objects.count(),
         'published_media': MediaContent.objects.filter(status='published').count(),
-        'live_streams': MediaContent.objects.filter(content_type='live', is_live=True).count(),
+        'draft_media': MediaContent.objects.filter(status='draft').count(),
+        'live_streams': MediaContent.objects.filter(type='live', is_live=True).count(),
+        'videos': MediaContent.objects.filter(type='video').count(),
+        'audios': MediaContent.objects.filter(type='audio').count(),
     }
     
-    return render(request, 'media/management_dashboard.html', context)
+    # Get media by category
+    media_by_category = ServiceCategory.objects.annotate(
+        media_count=Count('mediacontent')
+    ).order_by('-media_count')[:5]
+    
+    context = {
+        'recent_media': recent_media,
+        'live_media': live_media,
+        'stats': stats,
+        'media_by_category': media_by_category,
+    }
+    return render(request, 'media/dashboard.html', context)
 
 @login_required
-@user_passes_test(is_staff_user)
-def media_create_view(request):
-    """Create new media content"""
-    if request.method == 'POST':
-        try:
-            media_content = MediaContent(
-                title=request.POST.get('title'),
-                description=request.POST.get('description', ''),
-                content_type=request.POST.get('content_type'),
-                status=request.POST.get('status', 'draft'),
-                youtube_video_id=request.POST.get('youtube_video_id', ''),
-                waystream_embed_url=request.POST.get('waystream_embed_url', ''),
-                video_url=request.POST.get('video_url', ''),
-                audio_url=request.POST.get('audio_url', ''),
-                thumbnail_url=request.POST.get('thumbnail_url', ''),
-                pastor=request.POST.get('pastor', ''),
-                scripture=request.POST.get('scripture', ''),
-                created_by=request.user
-            )
-            
-            # Handle category
-            category_id = request.POST.get('category')
-            if category_id:
-                try:
-                    media_content.category = ServiceCategory.objects.get(id=category_id)
-                except ServiceCategory.DoesNotExist:
-                    pass
-            
-            # Handle scheduled start
-            scheduled_start = request.POST.get('scheduled_start')
-            if scheduled_start:
-                try:
-                    media_content.scheduled_start = timezone.datetime.fromisoformat(scheduled_start)
-                except:
-                    pass
-            
-            media_content.save()
-            
-            messages.success(request, f'Media content "{media_content.title}" created successfully!')
-            return redirect('media:management')
-            
-        except Exception as e:
-            messages.error(request, f'Error creating media content: {str(e)}')
+@user_passes_test(can_manage_content)
+def media_list(request):
+    """List all media content with search and filtering - following existing pattern"""
+    search_query = request.GET.get('search', '')
+    category_filter = request.GET.get('category', '')
+    type_filter = request.GET.get('type', '')
+    status_filter = request.GET.get('status', '')
     
+    media = MediaContent.objects.all().select_related('category', 'created_by')
+    
+    # Apply filters - following existing pattern
+    if search_query:
+        media = media.filter(
+            Q(title__icontains=search_query) |
+            Q(description__icontains=search_query) |
+            Q(pastor__icontains=search_query) |
+            Q(scripture__icontains=search_query)
+        )
+    
+    if category_filter:
+        media = media.filter(category__id=category_filter)
+        
+    if type_filter:
+        media = media.filter(type=type_filter)
+        
+    if status_filter:
+        media = media.filter(status=status_filter)
+    
+    # Order by creation date (newest first)
+    media = media.order_by('-created_at')
+    
+    # Pagination - following existing pattern
+    paginator = Paginator(media, 20)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    # Get filter options
     categories = ServiceCategory.objects.all()
+    
     context = {
+        'page_obj': page_obj,
+        'search_query': search_query,
+        'category_filter': category_filter,
+        'type_filter': type_filter,
+        'status_filter': status_filter,
         'categories': categories,
         'content_types': MediaContent.CONTENT_TYPE_CHOICES,
         'status_choices': MediaContent.STATUS_CHOICES,
     }
-    
-    return render(request, 'media/create_media.html', context)
+    return render(request, 'media/media_list.html', context)
 
 @login_required
-@user_passes_test(is_staff_user)
-def media_edit_view(request, media_id):
-    """Edit existing media content"""
-    media_content = get_object_or_404(MediaContent, id=media_id)
+@user_passes_test(can_manage_content)
+def media_detail(request, pk):
+    """View media details"""
+    media = get_object_or_404(MediaContent, pk=pk)
+    context = {
+        'media': media,
+    }
+    return render(request, 'media/media_detail.html', context)
+
+@login_required
+@user_passes_test(can_manage_content)
+def media_create(request):
+    """Create new media content - following existing pattern"""
+    if request.method == 'POST':
+        form = MediaContentForm(request.POST, request.FILES)
+        if form.is_valid():
+            media = form.save(commit=False)
+            media.created_by = request.user
+            media.save()
+            messages.success(request, f'Media content "{media.title}" created successfully!')
+            return redirect('media:media_detail', pk=media.pk)
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = MediaContentForm()
+    
+    context = {
+        'form': form,
+        'title': 'Create New Media Content',
+        'action': 'Create',
+    }
+    return render(request, 'media/media_form.html', context)
+
+@login_required
+@user_passes_test(can_manage_content)
+def media_update(request, pk):
+    """Update existing media content"""
+    media = get_object_or_404(MediaContent, pk=pk)
     
     if request.method == 'POST':
-        try:
-            media_content.title = request.POST.get('title')
-            media_content.description = request.POST.get('description', '')
-            media_content.content_type = request.POST.get('content_type')
-            media_content.status = request.POST.get('status', 'draft')
-            media_content.youtube_video_id = request.POST.get('youtube_video_id', '')
-            media_content.waystream_embed_url = request.POST.get('waystream_embed_url', '')
-            media_content.video_url = request.POST.get('video_url', '')
-            media_content.audio_url = request.POST.get('audio_url', '')
-            media_content.thumbnail_url = request.POST.get('thumbnail_url', '')
-            media_content.pastor = request.POST.get('pastor', '')
-            media_content.scripture = request.POST.get('scripture', '')
-            
-            # Handle category
-            category_id = request.POST.get('category')
-            if category_id:
-                try:
-                    media_content.category = ServiceCategory.objects.get(id=category_id)
-                except ServiceCategory.DoesNotExist:
-                    media_content.category = None
-            else:
-                media_content.category = None
-            
-            # Handle scheduled start
-            scheduled_start = request.POST.get('scheduled_start')
-            if scheduled_start:
-                try:
-                    media_content.scheduled_start = timezone.datetime.fromisoformat(scheduled_start)
-                except:
-                    media_content.scheduled_start = None
-            else:
-                media_content.scheduled_start = None
-            
-            media_content.save()
-            
-            messages.success(request, f'Media content "{media_content.title}" updated successfully!')
-            return redirect('media:management')
-            
-        except Exception as e:
-            messages.error(request, f'Error updating media content: {str(e)}')
+        form = MediaContentForm(request.POST, request.FILES, instance=media)
+        if form.is_valid():
+            media = form.save()
+            messages.success(request, f'Media content "{media.title}" updated successfully!')
+            return redirect('media:media_detail', pk=media.pk)
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = MediaContentForm(instance=media)
     
-    categories = ServiceCategory.objects.all()
     context = {
-        'media_content': media_content,
-        'categories': categories,
-        'content_types': MediaContent.CONTENT_TYPE_CHOICES,
-        'status_choices': MediaContent.STATUS_CHOICES,
+        'form': form,
+        'media': media,
+        'title': 'Update Media Content',
+        'action': 'Update',
     }
-    
-    return render(request, 'media/edit_media.html', context)
+    return render(request, 'media/media_form.html', context)
 
 @login_required
-@user_passes_test(is_staff_user)
-def media_delete_view(request, media_id):
+@user_passes_test(can_manage_content)
+def media_delete(request, pk):
     """Delete media content"""
-    media_content = get_object_or_404(MediaContent, id=media_id)
+    media = get_object_or_404(MediaContent, pk=pk)
     
     if request.method == 'POST':
-        title = media_content.title
-        media_content.delete()
+        title = media.title
+        media.delete()
         messages.success(request, f'Media content "{title}" deleted successfully!')
-        return redirect('media:management')
+        return redirect('media:media_list')
     
     context = {
-        'media_content': media_content,
+        'media': media,
     }
-    
-    return render(request, 'media/delete_confirm.html', context)
+    return render(request, 'media/media_confirm_delete.html', context)
 
 @csrf_exempt
 @login_required
-@user_passes_test(is_staff_user)
-def toggle_live_status(request, media_id):
-    """Toggle live status of media content"""
+@user_passes_test(can_manage_content)
+def toggle_live_status(request, pk):
+    """Toggle live status of media content - AJAX endpoint"""
     if request.method == 'POST':
         try:
-            media_content = get_object_or_404(MediaContent, id=media_id, content_type='live')
+            media = get_object_or_404(MediaContent, pk=pk, type='live')
             
-            if media_content.is_live:
+            if media.is_live:
                 # End the stream
-                media_content.is_live = False
-                media_content.actual_end = timezone.now()
+                media.is_live = False
+                media.actual_end = timezone.now()
                 status_message = 'Stream ended successfully'
             else:
                 # Start the stream
-                media_content.is_live = True
-                media_content.actual_start = timezone.now()
-                media_content.actual_end = None
+                media.is_live = True
+                media.actual_start = timezone.now()
+                media.actual_end = None
                 status_message = 'Stream started successfully'
             
-            media_content.save()
+            media.save()
             
             return JsonResponse({
                 'success': True,
-                'is_live': media_content.is_live,
+                'is_live': media.is_live,
                 'message': status_message
             })
             
@@ -218,29 +216,3 @@ def toggle_live_status(request, media_id):
             })
     
     return JsonResponse({'success': False, 'message': 'Invalid request method'})
-
-@login_required
-@user_passes_test(is_staff_user)
-def media_analytics_view(request, media_id):
-    """View analytics for specific media content"""
-    media_content = get_object_or_404(MediaContent, id=media_id)
-    
-    # Get viewer statistics
-    total_viewers = media_content.viewers.count()
-    active_viewers = media_content.viewers.filter(is_active=True).count()
-    
-    # Get top viewers by duration
-    top_viewers = media_content.viewers.order_by('-duration_watched')[:10]
-    
-    # Get recent activity
-    recent_viewers = media_content.viewers.order_by('-started_at')[:20]
-    
-    context = {
-        'media_content': media_content,
-        'total_viewers': total_viewers,
-        'active_viewers': active_viewers,
-        'top_viewers': top_viewers,
-        'recent_viewers': recent_viewers,
-    }
-    
-    return render(request, 'media/analytics.html', context)

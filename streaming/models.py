@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from media.models import MediaContent
 import uuid
-from django.utils import timezone
 
 User = get_user_model()
 
@@ -16,8 +15,8 @@ class LiveStreamSession(models.Model):
     ended_at = models.DateTimeField(blank=True, null=True)
     
     # YouTube Live Status
-    youtube_broadcast_status = models.CharField(max_length=20, blank=True)  # 'live', 'ready', 'testing', 'complete'
-    youtube_life_cycle_status = models.CharField(max_length=20, blank=True)  # 'created', 'ready', 'live', 'complete'
+    youtube_broadcast_status = models.CharField(max_length=20, blank=True)
+    youtube_life_cycle_status = models.CharField(max_length=20, blank=True)
     
     # Analytics
     peak_concurrent_viewers = models.IntegerField(default=0)
@@ -63,7 +62,7 @@ class StreamAnalytics(models.Model):
     total_reactions = models.IntegerField(default=0)
     
     # Technical
-    stream_quality = models.CharField(max_length=10, blank=True)  # 720p, 1080p, etc.
+    stream_quality = models.CharField(max_length=10, blank=True)
     total_bandwidth_used = models.BigIntegerField(default=0)  # in bytes
     
     created_at = models.DateTimeField(auto_now_add=True)

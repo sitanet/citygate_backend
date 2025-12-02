@@ -33,11 +33,19 @@ class MediaContent(models.Model):
         ('archived', 'Archived'),
     ]
     
-    # Basic Info
-    title = models.CharField(max_length=255)
-    description = models.TextField(blank=True)
-    content_type = models.CharField(max_length=10, choices=CONTENT_TYPE_CHOICES)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='draft')
+    # Basic Info - matching existing Content model patterns
+    title = models.CharField(max_length=200)  # Same as existing Content model
+    description = models.TextField()
+    
+    # Media URLs - matching existing field names from Content model
+    thumbnail_url = models.URLField(blank=True, null=True)
+    video_url = models.URLField(blank=True, null=True)
+    audio_url = models.URLField(blank=True, null=True)
+    
+    # Content metadata - following existing patterns
+    type = models.CharField(max_length=10, choices=CONTENT_TYPE_CHOICES)  # Using 'type' like existing Content
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='published')
+    category = models.ForeignKey(ServiceCategory, on_delete=models.SET_NULL, blank=True, null=True)
     
     # YouTube Integration
     youtube_video_id = models.CharField(max_length=50, blank=True, help_text="YouTube Video ID for live streams")
@@ -48,48 +56,40 @@ class MediaContent(models.Model):
     waystream_embed_url = models.URLField(blank=True, help_text="Waystream embed URL for audio")
     waystream_stream_id = models.CharField(max_length=100, blank=True)
     
-    # General URLs (fallback for other content)
-    video_url = models.URLField(blank=True, help_text="Direct video URL")
-    audio_url = models.URLField(blank=True, help_text="Direct audio URL")
-    thumbnail_url = models.URLField(blank=True)
-    
     # File uploads (optional local storage)
     media_file = models.FileField(upload_to=media_upload_path, blank=True, null=True)
     thumbnail_file = models.ImageField(upload_to=thumbnail_upload_path, blank=True, null=True)
     
-    # Content Details
-    category = models.ForeignKey(ServiceCategory, on_delete=models.SET_NULL, blank=True, null=True)
-    pastor = models.CharField(max_length=100, blank=True)
-    scripture = models.CharField(max_length=200, blank=True)
-    duration = models.DurationField(blank=True, null=True)
+    # Content details - matching existing Content model
+    is_live = models.BooleanField(default=False)
+    pastor = models.CharField(max_length=100, blank=True, null=True)
+    scripture = models.CharField(max_length=200, blank=True, null=True)
+    duration_seconds = models.IntegerField(blank=True, null=True)  # Following existing pattern
     
     # Live Stream Status
-    is_live = models.BooleanField(default=False)
     scheduled_start = models.DateTimeField(blank=True, null=True)
     actual_start = models.DateTimeField(blank=True, null=True)
     actual_end = models.DateTimeField(blank=True, null=True)
     
-    # Management
+    # Management - following existing patterns
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_media')
-    
-    # Timestamps
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)  # Matching Flutter createdAt
     updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
-        ordering = ['-created_at']
+        ordering = ['-created_at']  # Following existing pattern
         verbose_name = "Media Content"
         verbose_name_plural = "Media Content"
         
     def __str__(self):
-        return f"{self.title} ({self.content_type})"
+        return self.title
     
     @property
     def playback_url(self):
         """Get the appropriate playback URL based on content type"""
-        if self.content_type == 'live' and self.youtube_video_id:
+        if self.type == 'live' and self.youtube_video_id:
             return f"https://www.youtube.com/embed/{self.youtube_video_id}"
-        elif self.content_type == 'audio' and self.waystream_embed_url:
+        elif self.type == 'audio' and self.waystream_embed_url:
             return self.waystream_embed_url
         elif self.video_url:
             return self.video_url
@@ -109,33 +109,6 @@ class MediaContent(models.Model):
         elif self.thumbnail_url:
             return self.thumbnail_url
         return None
-    
-    @property
-    def embed_html(self):
-        """Get HTML embed code for the content"""
-        if self.content_type == 'live' and self.youtube_video_id:
-            return f'''
-            <iframe 
-                width="100%" 
-                height="315" 
-                src="https://www.youtube.com/embed/{self.youtube_video_id}?autoplay=1" 
-                title="{self.title}"
-                frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen>
-            </iframe>
-            '''
-        elif self.content_type == 'audio' and self.waystream_embed_url:
-            return f'''
-            <iframe 
-                src="{self.waystream_embed_url}"
-                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
-                title="{self.title}"
-                allowfullscreen
-                loading="lazy">
-            </iframe>
-            '''
-        return None
 
 
 class MediaViewer(models.Model):
@@ -150,7 +123,7 @@ class MediaViewer(models.Model):
     duration_watched = models.DurationField(default=timezone.timedelta(0))
     
     # Device Info
-    device_type = models.CharField(max_length=50, blank=True)  # mobile, web, etc.
+    device_type = models.CharField(max_length=50, blank=True)
     ip_address = models.GenericIPAddressField(blank=True, null=True)
     user_agent = models.TextField(blank=True)
     

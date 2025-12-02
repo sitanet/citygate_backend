@@ -11,6 +11,19 @@ import json
 from .models import Content, Event, ServiceCategory
 from .forms import ContentForm, EventForm, CategoryForm
 
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib import messages
+from django.core.paginator import Paginator
+from django.db.models import Q, Count
+from django.utils import timezone
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+import json
+from .models import Content, Event, ServiceCategory
+from .forms import ContentForm, EventForm, CategoryForm
+
 def can_manage_content(user):
     """Check if user can manage content"""
     return user.role in ['admin', 'content'] or user.is_superuser
@@ -22,20 +35,21 @@ def can_view_content(user):
 @login_required
 @user_passes_test(can_view_content)
 def dashboard(request):
-    """Main dashboard for content management"""
-    # Get recent content
+    """Main dashboard for content management - Enhanced with Media & Streaming"""
+    # Get recent content (original)
     recent_content = Content.objects.filter(status='published').order_by('-created_at')[:5]
     
-    # Get upcoming events
+    # Get upcoming events (original)
     upcoming_events = Event.objects.filter(
         date_time__gte=timezone.now()
     ).order_by('date_time')[:5]
     
-    # Get live content
+    # Get live content (original)
     live_content = Content.objects.filter(is_live=True, status='published')
     
-    # Get statistics
+    # Enhanced statistics with Media & Streaming
     stats = {
+        # Original content stats
         'total_content': Content.objects.count(),
         'published_content': Content.objects.filter(status='published').count(),
         'draft_content': Content.objects.filter(status='draft').count(),
@@ -43,14 +57,62 @@ def dashboard(request):
         'live_events': Event.objects.filter(is_live=True).count(),
         'upcoming_events': Event.objects.filter(date_time__gte=timezone.now()).count(),
         'total_categories': ServiceCategory.objects.count(),
-        'videos': Content.objects.filter(type='video').count(),  # Fixed field name
-        'audios': Content.objects.filter(type='audio').count(),   # Fixed field name
-        'live_streams': Content.objects.filter(type='live').count(),  # Fixed field name
+        'videos': Content.objects.filter(type='video').count(),
+        'audios': Content.objects.filter(type='audio').count(),
+        'live_streams': Content.objects.filter(type='live').count(),
     }
     
-    # Get content by category
+    # Add media & streaming stats if apps exist
+    try:
+        from media.models import MediaContent
+        from streaming.models import LiveStreamSession, StreamChat
+        
+        # Media stats
+        stats.update({
+            'total_media': MediaContent.objects.count(),
+            'published_media': MediaContent.objects.filter(status='published').count(),
+            'draft_media': MediaContent.objects.filter(status='draft').count(),
+            'media_videos': MediaContent.objects.filter(type='video').count(),
+            'media_audios': MediaContent.objects.filter(type='audio').count(),
+            'media_live_streams': MediaContent.objects.filter(type='live').count(),
+            'active_live_streams': MediaContent.objects.filter(type='live', is_live=True).count(),
+        })
+        
+        # Streaming stats
+        stats.update({
+            'total_stream_sessions': LiveStreamSession.objects.count(),
+            'active_sessions': LiveStreamSession.objects.filter(ended_at__isnull=True).count(),
+            'total_chat_messages': StreamChat.objects.count(),
+        })
+        
+        # Get recent media content
+        recent_media = MediaContent.objects.filter(status='published').order_by('-created_at')[:5]
+        
+        # Get active live streams
+        active_streams = MediaContent.objects.filter(type='live', is_live=True)
+        
+        # Get recent stream sessions
+        recent_sessions = LiveStreamSession.objects.order_by('-started_at')[:5]
+        
+    except ImportError:
+        # Media/streaming apps not installed
+        stats.update({
+            'total_media': 0,
+            'published_media': 0,
+            'active_live_streams': 0,
+            'total_stream_sessions': 0,
+            'active_sessions': 0,
+            'media_videos': 0,
+            'media_audios': 0,
+        })
+        recent_media = []
+        active_streams = []
+        recent_sessions = []
+    
+    # Get content by category (enhanced)
     content_by_category = ServiceCategory.objects.annotate(
-        content_count=Count('content')
+        content_count=Count('content'),
+        media_count=Count('mediacontent', distinct=True) if 'recent_media' in locals() else Count('content')
     ).order_by('-content_count')[:5]
     
     context = {
@@ -59,9 +121,19 @@ def dashboard(request):
         'live_content': live_content,
         'stats': stats,
         'content_by_category': content_by_category,
+        # New media & streaming context
+        'recent_media': locals().get('recent_media', []),
+        'active_streams': locals().get('active_streams', []),
+        'recent_sessions': locals().get('recent_sessions', []),
+        'has_media_app': 'recent_media' in locals(),
     }
+    
     return render(request, 'content/dashboard.html', context)
 
+# Keep all your existing views below this point...
+# (content_list, content_create, event_list, etc. remain unchanged)
+
+# ... rest of existing views remain the same ...
 # Content Views
 
 def content_list(request):
